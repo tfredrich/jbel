@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=us-ascii">
+  <title>Java Library for Collection Filtering and Sorting with Functional Programming</title>
+  <meta name="author" content="Todd Fredrich">
+  <meta name="keywords" content="java expression language, functional programming, java closure, collection filtering, collection sorting">
+</head>
+
+<body dir="ltr">
+  <table style="text-align: left; width: 744px;" border="0" cellpadding="2" cellspacing="2">
+	<tbody>
+	  <tr>
+		<td style="width: 191px;" align="left" valign="top"><img style="width: 271px; height: 99px;" alt="JBEL - Java Boolean Expression Library" src="jbel.jpg" height="99" width="271"></td>
+		<td style="width: 533px;" align="right" valign="top">
+			<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=146380&amp;type=3" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a><br>
+			<a href="https://sourceforge.net/projects/jbel/">Project summary</a> on Source Forge.<br>
+			<a href="https://sourceforge.net/project/showfiles.php?group_id=146380">Download</a> from Source Forge
+		</td>
+	  </tr>
+	</tbody>
+  </table><br>
+
+  <table border="0" cellpadding="2" cellspacing="2" width="744">
+	<tbody>
+	  <tr>
+		<td align="left" valign="top">
+		  JBEL is a small, efficient Java library enabling programmers to create simple, easily understandable expressions to
+		  perform collection filtering and/or sorting. It also supports the concept of closures to facilitate rapid implementation
+		  of filtering and sorting functionality. The following benefits are realized through consistent use of
+		  JBEL:<br>
+		  <ul>
+			<li>No more copy-n-paste coding for comparing and filtering.</li>
+			<li>Reduce duplicated code and code size.</li>
+			<li>Improve filter and sort clarity, readability, and maintainability.</li>
+			<li>Increase application reliability with reduced bug introduction.</li>
+			<li>Utilize closure (see <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">wikipedia</a>)
+			concepts in your Java code.</li>
+		  </ul>
+		  The following examples should get you going on your understanding and justification for use of JBEL. After a
+		  look, the benefits are obvious, especially when considering the amount of copy-n-paste coding that often happens around
+		  comparing and filtering.  For additional examples, check out the unit tests in the source code
+		  (available at <a href="https://sourceforge.net/project/showfiles.php?group_id=146380">SourceForge</a>).
+		</td>
+	  </tr>
+	</tbody>
+  </table>
+
+  <h1>Filtering</h1>
+
+  <table border="1" cellpadding="2" cellspacing="2" width="744">
+	<tbody>
+	  <tr>
+		<td align="left" valign="top">
+		  <h2>Before JBEL:</h2>
+		</td>
+
+		<td align="left" valign="top">
+		  <h2>After JBEL:</h2>
+		</td>
+	  </tr>
+
+	  <tr>
+		<td align="left" valign="top">
+			<pre>
+<code>private Collection filterCollection(Collection toFilter)
+{
+  Collection results = new Vector();
+  Iterator iterator = toFilter.iterator();
+
+  while (iterator.hasNext())
+  {
+    (SomeInstance) instance = (SomeInstance) iterator.next();
+
+    if (instance.getAccountBalance() &gt; 10000
+        &amp;&amp; instance.isNewCustomer())
+    {
+      results.add(instance);
+    }
+  }
+
+  return results;
+}
+
+Collection results = filterCollection(toFilter);</code>
+			</pre>
+		</td>
+
+		<td align="left" valign="top">
+		  <pre>
+<code>SelectExpressionBuilder builder = CollectionUtils.newSelectExpressionBuilder();
+builder.attribute("accountBalance").greaterThan(10000)
+  .and(builder.attribute("isNewCustomer").equalTo(true));
+
+Collection results = CollectionUtils.select(toFilter, builder.getExpression());</code>
+</pre>
+		  Or we could use closure-style functionality instead of the builder above...
+		  <pre>
+<code>Collection results = CollectionUtils.select(toFilter, new AbstractPredicate()
+  {
+    public boolean test(Object argument)
+    throws EvaluationException
+    {
+      Customer customer = (Customer) argument;
+      return (customer.getAccountBalance() &gt; 10000.0
+        &amp;&amp; customer.isNewCustomer());
+    }
+  }
+);</code></pre>
+		</td>
+	  </tr>
+	</tbody>
+  </table>
+
+  <h1>Sorting/Collation</h1>
+
+  <table border="1" cellpadding="2" cellspacing="2" width="744">
+	<tbody>
+	  <tr>
+		<td align="left" valign="top">
+		  <h2>Before JBEL:</h2>
+		</td>
+
+		<td align="left" valign="top">
+		  <h2>After JBEL:</h2>
+		</td>
+	  </tr>
+
+	  <tr>
+		<td align="left" valign="top">
+		  <pre>
+<code>public class PersonNameComparator
+implements Comparator
+{
+  public int compare(Object obj1, Object obj2)
+  {
+    Person person1 = (Person) obj1;
+    Person person2 = (Person) obj2;
+    int result = person1.getLastName()
+      .compareTo(person2.getLastName());
+
+    if (result == 0)
+    {
+      result = person1.getFirstName()
+        .compareTo(person2.getFirstName());
+    }
+
+    if (result == 0)
+    {
+      result = person1.getMiddleInitial()
+        .compareTo(person2.getMiddleInitial());
+    }
+
+    return result;
+  }
+}
+
+Collections.sort(peopleToSort, new PersonNameComparator());</code>
+</pre>
+		</td>
+
+		<td align="left" valign="top">
+		  <pre>
+<code>CollationExpressionBuilder
+orderBy = CollectionUtils.newCollationExpressionBuilder();
+orderBy.attribute("lastName")
+  .attribute("firstName")
+  .attribute("middleInitial");
+
+Collections.sort(peopleToSort, orderBy.getExpression());</code></pre>
+		  Or, call Collections.sort() indirectly by simply evaluating the expression...
+		  <pre>
+<code>orderBy.evaluate(peopleToSort);</code>
+		  </pre>
+		</td>
+	  </tr>
+	</tbody>
+  </table>
+  
+  <h1>Closures</h1>
+  <table border="0" cellpadding="2" cellspacing="2" width="744">
+	<tbody>
+	  <tr>
+		<td align="left" valign="top">
+		  <p>The concept of <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">closures</a> is a
+		  <a href="http://en.wikipedia.org/wiki/Functional_programming">functional programming</a> concept.
+		  Essentially, a JBEL closure is an object that can be passed around and is supported by the interfaces,
+		  <em>Expression</em>, <em>UnaryFunction</em>, <em>BinaryFunction</em>, and <em>Predicate</em>.</p>
+		  
+		  <p>You can read more about closures on <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">wikipedia</a>.</p>
+		  
+		  <p>Here is an example of a closure utilized within JBEL to support the CollectionUtils.select() operation.</p>
+		</td>
+	  </tr>
+	</tbody>
+  </table>
+  <table border="1" cellpadding="2" cellspacing="2" width="744">
+	<tbody>
+	  <tr>
+		<td align="left" valign="top">
+		  <pre><code>private static class SelectFunction
+implements UnaryFunction
+{
+	Predicate predicate;
+	Collection results;
+	
+	public SelectFunction(Predicate predicate, Collection resultingCollection)
+	{
+		this.predicate = predicate;
+		this.results = resultingCollection;
+	}
+	
+	@Override
+	public Object perform(Object argument)
+	throws FunctionException
+	{
+		if (isSelected(argument))
+		{
+			results.add((T) argument);
+		}
+		
+		return null;
+	}
+
+	protected boolean isSelected(Object argument)
+	throws FunctionException
+	{
+		try
+		{
+			return predicate.test(argument);
+		}
+		catch (EvaluationException e)
+		{
+			throw new FunctionException(e);
+		}
+	}
+
+	public Collection getResults()
+	{
+		return results;
+	}
+}
+
+SelectFunction selectFunction = new SelectFunction(predicate, newCollectionOfType(collection));
+for (Object element : collection)
+{
+	selectFunction.perform(element);
+}
+return selectFunction.getResults();</code></pre>
+		</td>
+	  </tr>
+	</tbody>
+  </table>
+</body>
+</html>
