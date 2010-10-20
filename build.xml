@@ -28,6 +28,15 @@
 		</fileset>
     </path>
 
+	<path id="test.classpath">
+		<pathelement location="${dir.compile}"/>
+		<pathelement location="${dir.compile.test}"/>
+		<fileset dir="${dir.lib}">
+			<include name="**/*.jar"/>
+			<exclude name="**/sources/*"/>
+		</fileset>
+    </path>
+
     <target name="_init">
 		<mkdir dir="${dir.compile}"/>
 		<mkdir dir="${dir.compile.test}"/>
@@ -86,7 +95,7 @@
         <delete dir="${dir.test.results}"/>
     	<mkdir dir="${dir.test.results}"/>
     	<junit printsummary="true">
-    		<classpath refid="runtime.classpath"/>
+    		<classpath refid="test.classpath"/>
     		<formatter type="xml" usefile="true"/>
     		<batchtest errorproperty="test.failure" failureproperty="test.failure" fork="yes" todir="${dir.test.results}">
     			<fileset dir="${dir.src.test}">
