@@ -35,14 +35,14 @@ extends AbstractExpression
 	/**
 	 * A list of AccessorFunction instances that retrieve the field values from an object.
 	 */
-	private List accessorFunctions;
+	private List<AccessorFunction> accessorFunctions;
 	
 	/**
 	 * Construct a new empty AccessorExpression instance.
 	 */
 	public AccessorExpression()
 	{
-		accessorFunctions = new ArrayList();
+		accessorFunctions = new ArrayList<AccessorFunction>();
 	}
 
 	/**
@@ -76,11 +76,11 @@ extends AbstractExpression
 	 * @return a list of retrieved values.
 	 * @throws EvaluationException if the expression cannot be evaluated.
 	 */
-	public Object evaluate(List argument)
+	public Object evaluate(List<?> argument)
 	throws EvaluationException
 	{
-		List results = new ArrayList();
-		Iterator iterator = argument.iterator();
+		List<Object> results = new ArrayList<Object>();
+		Iterator<?> iterator = argument.iterator();
 		
 		while (iterator.hasNext())
 		{
@@ -101,7 +101,7 @@ extends AbstractExpression
 	public Object evaluate(Object argument)
 	throws EvaluationException
 	{
-		Iterator iterator = accessorFunctions.iterator();
+		Iterator<?> iterator = accessorFunctions.iterator();
 		Object attribute = argument;
 		
 		while (iterator.hasNext())
