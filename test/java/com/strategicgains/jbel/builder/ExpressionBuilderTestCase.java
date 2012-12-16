@@ -79,7 +79,7 @@ public class ExpressionBuilderTestCase
 	public void testSelectEquals()
 	throws Exception
 	{
-		expression.attribute("intValue").equalTo(5);
+		expression.field("intValue").equalTo(5);
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 	}
@@ -98,7 +98,7 @@ public class ExpressionBuilderTestCase
 			Integer.valueOf(7)
 		};
 		
-		expression.attribute("intValue").isIn(values);
+		expression.field("intValue").isIn(values);
 		List result = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(4, result.size());
 	}
@@ -111,7 +111,7 @@ public class ExpressionBuilderTestCase
 	{
 		
 		List values = (List) new AccessorExpression("intValue").evaluate(objects);
-		expression.attribute("intValue").isIn(values);
+		expression.field("intValue").isIn(values);
 		List result = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(13, result.size());
 	}
@@ -119,7 +119,7 @@ public class ExpressionBuilderTestCase
 	public void testSelectToUpper()
 	throws Exception
 	{
-		expression.toUpper(expression.attribute("name")).equalTo("FIVE");
+		expression.toUpper(expression.field("name")).equalTo("FIVE");
 		List result = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(1, result.size());
 		assertEquals(5, ((TestObject)result.get(0)).getIntValue());
@@ -128,7 +128,7 @@ public class ExpressionBuilderTestCase
 	public void testSelectToLower()
 	throws Exception
 	{
-		expression.toLower(expression.attribute("name")).equalTo("eight");
+		expression.toLower(expression.field("name")).equalTo("eight");
 		List result = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(1, result.size());
 		assertEquals(8, ((TestObject)result.get(0)).getIntValue());
@@ -148,7 +148,7 @@ public class ExpressionBuilderTestCase
 			Integer.valueOf(7)
 		};
 		
-		expression.attribute("intValue").isIn(values);
+		expression.field("intValue").isIn(values);
 		orderBy.orderBy("intValue");
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(4, results.size());
@@ -164,9 +164,9 @@ public class ExpressionBuilderTestCase
 	public void testSelectWithAnd()
 	throws Exception
 	{
-		expression.attribute("name").equalTo("five")
-			.and(expression.attribute("stringValue").equalTo("5"))
-			.and(expression.attribute("intValue").equalTo(5));
+		expression.field("name").equalTo("five")
+			.and(expression.field("stringValue").equalTo("5"))
+			.and(expression.field("intValue").equalTo(5));
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(1, results.size());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
@@ -178,9 +178,9 @@ public class ExpressionBuilderTestCase
 	public void testSelectWithNonsensicalAnd()
 	throws Exception
 	{
-		expression.attribute("stringValue").equalTo("3")
-			.and(expression.attribute("intValue").equalTo(5))
-			.and(expression.attribute("name").equalTo("five"));
+		expression.field("stringValue").equalTo("3")
+			.and(expression.field("intValue").equalTo(5))
+			.and(expression.field("name").equalTo("five"));
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(0, results.size());
 	}
@@ -191,9 +191,9 @@ public class ExpressionBuilderTestCase
 	public void testSelectWithOr()
 	throws Exception
 	{
-		expression.attribute("intValue").equalTo(5)
-			.or(expression.attribute("name").equalTo("nine"))
-			.or(expression.attribute("stringValue").equalTo("3"));
+		expression.field("intValue").equalTo(5)
+			.or(expression.field("name").equalTo("nine"))
+			.or(expression.field("stringValue").equalTo("3"));
 		orderBy.orderBy("intValue");
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(3, results.size());
@@ -205,12 +205,12 @@ public class ExpressionBuilderTestCase
 	public void testSelectWithAndOr()
 	throws Exception
 	{
-		expression.attribute("name").equalTo("five")
-			.and(expression.attribute("stringValue").equalTo("5"))
-			.and(expression.attribute("intValue").equalTo(5))
-			.or(expression.attribute("name").equalTo("nine2")
-				.and(expression.attribute("stringValue").equalTo("9"))
-				.and(expression.attribute("intValue").equalTo(9)));
+		expression.field("name").equalTo("five")
+			.and(expression.field("stringValue").equalTo("5"))
+			.and(expression.field("intValue").equalTo(5))
+			.or(expression.field("name").equalTo("nine2")
+				.and(expression.field("stringValue").equalTo("9"))
+				.and(expression.field("intValue").equalTo(9)));
 		orderBy.orderBy("intValue");
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(2, results.size());
@@ -221,7 +221,7 @@ public class ExpressionBuilderTestCase
 	public void testOneToOneAttributeSelect()
 	throws Exception
 	{
-		expression.attribute("parent").attribute("intValue").equalTo(99);
+		expression.field("parent").field("intValue").equalTo(99);
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression());
 		assertEquals(7, results.size());
 	}
@@ -229,9 +229,9 @@ public class ExpressionBuilderTestCase
 	public void testMultipleGetExpressionCalls()
 	throws Exception
 	{
-		expression.attribute("intValue").equalTo(5)
-			.or(expression.attribute("name").equalTo("nine"))
-			.or(expression.attribute("stringValue").equalTo("3"));
+		expression.field("intValue").equalTo(5)
+			.or(expression.field("name").equalTo("nine"))
+			.or(expression.field("stringValue").equalTo("3"));
 		expression.getExpression();
 		expression.getExpression();
 		orderBy.orderBy("intValue");
@@ -245,7 +245,7 @@ public class ExpressionBuilderTestCase
 	public void testSelectBetween()
 	throws Exception
 	{
-		expression.attribute("intValue").between(3, 5);
+		expression.field("intValue").between(3, 5);
 		orderBy.orderBy("intValue");
 		List results = (List) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(3, results.size());

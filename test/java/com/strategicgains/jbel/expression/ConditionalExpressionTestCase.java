@@ -38,7 +38,7 @@ public class ConditionalExpressionTestCase
 			new LiteralExpression(5));
 		
 		SelectExpressionBuilder select2 = new SelectExpressionBuilder();
-		select2.attribute("stringValue");
+		select2.field("stringValue");
 		Expression trueExpr = select2.getExpression();
 
 		Expression falseExpr = new LiteralExpression("N/A");

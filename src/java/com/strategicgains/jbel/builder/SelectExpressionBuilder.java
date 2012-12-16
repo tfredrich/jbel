@@ -49,8 +49,8 @@ extends AbstractExpressionBuilder
 	}
 	
 	// BUILDER METHODS
-	
-	public SelectExpressionBuilder attribute(String attributeName)
+
+	public SelectExpressionBuilder field(String name)
 	{
 		SelectExpressionBuilder result = this;
 		
@@ -58,22 +58,32 @@ extends AbstractExpressionBuilder
 		{
 			if (getExpression() instanceof AccessorExpression)
 			{
-				((AccessorExpression) result.getExpression()).attribute(attributeName);
+				((AccessorExpression) result.getExpression()).attribute(name);
 			}
 			else
 			{
 				result = new SelectExpressionBuilder();
-				result.setExpression(new AccessorExpression(attributeName));
+				result.setExpression(new AccessorExpression(name));
 			}
 		}
 		else
 		{
-			result.setExpression(new AccessorExpression(attributeName));
+			result.setExpression(new AccessorExpression(name));
 		}
 
 		return result;
 	}
 	
+	public SelectExpressionBuilder fields(String... names)
+	{
+		return this;
+	}
+
+	public SelectExpressionBuilder index(int index)
+	{
+		return this;
+	}
+
 	public SelectExpressionBuilder between(int low, int high)
 	{
 		return between(new LiteralExpression(low), new LiteralExpression(high));
