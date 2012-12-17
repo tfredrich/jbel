@@ -37,7 +37,7 @@ implements Predicate
 	}
 	
 	public boolean test(Object object)
-		throws EvaluationException
+	throws EvaluationException
 	{
 		return ((Boolean) evaluate(object)).booleanValue();
 	}

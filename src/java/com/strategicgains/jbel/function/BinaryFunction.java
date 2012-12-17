@@ -35,5 +35,5 @@ public interface BinaryFunction
 	 * @throws FunctionException if the function could not be evaluated.
 	 */
 	public Object perform(Object argument1, Object argument2)
-		throws FunctionException;
+	throws FunctionException;
 }

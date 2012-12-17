@@ -25,7 +25,7 @@ import com.strategicgains.jbel.exception.EvaluationException;
  * @version $Revision: 1.6 $
  */
 public abstract class UnaryExpression
-	extends AbstractExpression
+extends AbstractExpression
 {
 	private Expression operand;
 	

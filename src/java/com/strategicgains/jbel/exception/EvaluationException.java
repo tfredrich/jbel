@@ -23,7 +23,7 @@ package com.strategicgains.jbel.exception;
  * @version $Revision: 1.1 $
  */
 public class EvaluationException
-	extends Exception
+extends RuntimeException
 {
 	private static final long serialVersionUID = -2846961186226290514L;
 

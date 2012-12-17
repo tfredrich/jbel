@@ -17,7 +17,7 @@ package com.strategicgains.jbel.predicate;
 
 import junit.framework.TestCase;
 
-import com.strategicgains.jbel.Expressions;
+import com.strategicgains.jbel.Literals;
 import com.strategicgains.jbel.expression.Expression;
 
 public class AndPredicateTestCase
@@ -26,28 +26,28 @@ extends TestCase
 	public void testEvaluateTrue()
 	throws Exception
 	{
-		Expression expression = new AndPredicate(Expressions.TRUE, Expressions.TRUE);
+		Expression expression = new AndPredicate(Literals.TRUE, Literals.TRUE);
 		assertTrue(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 
 	public void testEvaluateFalse()
 	throws Exception
 	{
-		Expression expression = new AndPredicate(Expressions.TRUE, Expressions.FALSE);
+		Expression expression = new AndPredicate(Literals.TRUE, Literals.FALSE);
 		assertFalse(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 
 	public void testEvaluateFalseReverse()
 	throws Exception
 	{
-		Expression expression = new AndPredicate(Expressions.FALSE, Expressions.TRUE);
+		Expression expression = new AndPredicate(Literals.FALSE, Literals.TRUE);
 		assertFalse(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 
 	public void testEvaluateBothFalse()
 	throws Exception
 	{
-		Expression expression = new AndPredicate(Expressions.FALSE, Expressions.FALSE);
+		Expression expression = new AndPredicate(Literals.FALSE, Literals.FALSE);
 		assertFalse(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 }

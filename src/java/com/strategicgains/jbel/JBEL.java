@@ -1,5 +1,5 @@
 /*
-	Copyright 2005 Strategic Gains, Inc.
+    Copyright 2012, Strategic Gains, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -13,23 +13,23 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package com.strategicgains.jbel.predicate;
+package com.strategicgains.jbel;
 
-import com.strategicgains.jbel.expression.Expression;
+import com.strategicgains.jbel.query.SelectQuery;
 
-
-
-
-public class AndPredicate
-extends BinaryPredicate
+/**
+ * @author toddf
+ * @since Dec 16, 2012
+ */
+public class JBEL
 {
-	public AndPredicate(Expression leftExpression, Expression rightExpression)
+	public static SelectQuery query()
 	{
-		super(leftExpression, rightExpression);
+		return new SelectQuery();
 	}
 
-	protected Object evaluateResults(Object value1, Object value2)
+	public static Object select(Object argument, SelectQuery query)
 	{
-		return Boolean.valueOf(((Boolean)value1).booleanValue() && ((Boolean)value2).booleanValue());
+		return query.evaluate(argument);
 	}
 }

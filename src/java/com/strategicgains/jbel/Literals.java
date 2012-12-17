@@ -20,7 +20,7 @@ import com.strategicgains.jbel.expression.LiteralExpression;
 import com.strategicgains.jbel.predicate.LiteralPredicate;
 import com.strategicgains.jbel.predicate.Predicate;
 
-public final class Expressions
+public final class Literals
 {
 	// CONSTANTS
 
@@ -31,7 +31,7 @@ public final class Expressions
 	
 	// CONSTRUCTOR
 	
-	private Expressions()
+	private Literals()
 	{
 		// do nothing--this class is non-instantiable.
 	}
