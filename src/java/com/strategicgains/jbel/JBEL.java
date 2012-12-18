@@ -15,7 +15,12 @@
 */
 package com.strategicgains.jbel;
 
-import com.strategicgains.jbel.query.SelectQuery;
+import java.util.Map;
+
+import com.strategicgains.jbel.builder.ObjectQueryBuilder;
+import com.strategicgains.jbel.expression.AccessorExpression;
+import com.strategicgains.jbel.expression.AggregationExpression;
+import com.strategicgains.jbel.expression.Expression;
 
 /**
  * @author toddf
@@ -23,13 +28,24 @@ import com.strategicgains.jbel.query.SelectQuery;
  */
 public class JBEL
 {
-	public static SelectQuery query()
+	public static Object field(Object argument, String fieldExpression)
 	{
-		return new SelectQuery();
+		return new AccessorExpression(fieldExpression).evaluate(argument);
 	}
 
-	public static Object select(Object argument, SelectQuery query)
+	@SuppressWarnings("unchecked")
+    public static Map<String, Object> fields(Object argument, String... fieldExpressions)
 	{
-		return query.evaluate(argument);
+		return (Map<String, Object>) new AggregationExpression(fieldExpressions).evaluate(argument);
+	}
+
+	public static ObjectQueryBuilder queryBuilder()
+	{
+		return new ObjectQueryBuilder();
+	}
+
+	public static Object query(Expression expression, Object argument)
+	{
+		return expression.evaluate(argument);
 	}
 }

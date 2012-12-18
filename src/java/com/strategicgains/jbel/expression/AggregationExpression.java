@@ -21,21 +21,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Aggregates (extracts) several fields/properties from an object into a Map.
+ * 
  * @author toddf
  * @since Dec 16, 2012
  */
-public class FieldsExpression
+public class AggregationExpression
 implements Expression
 {
-	private List<FieldExpression> fields = new ArrayList<FieldExpression>();
+	private List<AccessorExpression> accessors = new ArrayList<AccessorExpression>();
 
-	public FieldsExpression(String... selections)
+	public AggregationExpression(String... fields)
     {
 		super();
-		
-		for (String select : selections)
+		attributes(fields);
+    }
+
+	public void attributes(String... fields)
+    {
+	    for (String select : fields)
 		{
-			fields.add(new FieldExpression(select));
+			accessors.add(new AccessorExpression(select));
 		}
     }
 
@@ -44,9 +50,9 @@ implements Expression
 	{
 		Map<String, Object> results = new HashMap<String, Object>();
 
-		for (FieldExpression field : fields)
+		for (AccessorExpression accessor : accessors)
 		{
-			results.put(field.getName(), field.evaluate(argument));
+			results.put(accessor.getAttributeName(), accessor.evaluate(argument));
 		}
 		
 		return results;

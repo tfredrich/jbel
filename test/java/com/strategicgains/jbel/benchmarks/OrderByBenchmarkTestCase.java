@@ -52,7 +52,7 @@ public class OrderByBenchmarkTestCase
 			
 			for (int i = 0; i < REPEAT_COUNT; ++i)
 			{
-				Collections.sort(toSort, (CollationExpression<TestObject>) orderBy.getExpression());
+				Collections.sort(toSort, (CollationExpression<TestObject>) orderBy.build());
 			}
 
 			Date after = new Date();

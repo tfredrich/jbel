@@ -42,8 +42,7 @@ import com.strategicgains.jbel.function.ComparingFunction;
  * @version $Revision: 1.2 $
  */
 public class CollationExpression<T>
-extends AbstractExpression
-implements Comparator<T>, Serializable
+implements Expression, Comparator<T>, Serializable
 {
 	// SECTION: CONSTANTS
 
@@ -145,7 +144,8 @@ implements Comparator<T>, Serializable
 	 * @return the ordered collection.
 	 * @throws EvaluationException if the argument is not a List or Collection.
 	 */
-	public Object evaluate(Object argument)
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Object evaluate(Object argument)
 	throws EvaluationException
 	{
 		Object results = argument;

@@ -63,7 +63,7 @@ extends AbstractExpressionBuilder
 	 */
 	public CollationExpressionBuilder<T> orderBy(String attributeName, CollationOrder sortOrder)
 	{
-		((CollationExpression<T>) getExpression()).orderBy(attributeName, sortOrder);
+		((CollationExpression<T>) build()).orderBy(attributeName, sortOrder);
 		return this;
 	}
 	
@@ -76,20 +76,7 @@ extends AbstractExpressionBuilder
 	 */
 	public CollationExpressionBuilder<T> orderBy(AccessorExpression expression, CollationOrder sortOrder)
 	{
-		((CollationExpression<T>) getExpression()).orderBy(expression, sortOrder);
+		((CollationExpression<T>) build()).orderBy(expression, sortOrder);
 		return this;
-	}
-	
-	/**
-	 * Evaluate the underlying CollationExpression over a collection.
-	 * 
-	 * @param collection
-	 * @return
-	 * @throws EvaluationException
-	 */
-	public Collection<T> evaluate(Collection<T> collection)
-	throws EvaluationException
-	{
-		return (Collection<T>) ((CollationExpression<T>) getExpression()).evaluate(collection);
 	}
 }

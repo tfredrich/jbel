@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.predicate;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.Expression;
 
 public abstract class PredicateExpression
@@ -27,7 +26,6 @@ extends BinaryPredicate
 	}
 
 	public int compare(Object object1, Object object2)
-	throws EvaluationException 
 	{
 		int result = 0;
 

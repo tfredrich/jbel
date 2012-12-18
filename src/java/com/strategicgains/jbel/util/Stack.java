@@ -1,5 +1,5 @@
 /*
-	Copyright 2005 Strategic Gains, Inc.
+    Copyright 2012, Strategic Gains, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -13,11 +13,21 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package com.strategicgains.jbel.expression;
+package com.strategicgains.jbel.util;
 
+import java.util.Iterator;
 
-
-public abstract class AbstractExpression
-implements Expression
+/**
+ * @author toddf
+ * @since Dec 18, 2012
+ */
+public interface Stack<T>
 {
+	T push(T object);
+	T pop();
+	T peek();
+	int size();
+	boolean isEmpty();
+	void clear();
+	Iterator<T> iterator();
 }

@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.predicate;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.BinaryExpression;
 import com.strategicgains.jbel.expression.Expression;
 
@@ -37,7 +36,6 @@ implements Predicate
 	}
 	
 	public boolean test(Object object)
-		throws EvaluationException
 	{
 		return ((Boolean) evaluate(object)).booleanValue();
 	}

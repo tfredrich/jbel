@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.expression;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 
 /**
  * Expression is the root object of the expression library.  It follows the Composite pattern (GoF), in that
@@ -23,10 +22,8 @@ import com.strategicgains.jbel.exception.EvaluationException;
  * 
  * @author Todd Fredrich
  * @since Aug 22, 2005
- * @version $Revision$
  */
 public interface Expression
 {
-	public Object evaluate(Object argument)
-	throws EvaluationException;
+	public Object evaluate(Object argument);
 }

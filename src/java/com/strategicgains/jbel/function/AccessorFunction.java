@@ -29,13 +29,10 @@ import com.strategicgains.jbel.exception.FunctionException;
 public class AccessorFunction
 implements UnaryFunction
 {
-	private static final int UNDEFINED_INDEX = -1;
-
 	/**
 	 * The name of an object attribute from which a value will be retrieved.
 	 */
 	private String attributeName;
-	private int index;
 	
 	/**
 	 * Construct an accessor function for a given field name.
@@ -44,26 +41,7 @@ implements UnaryFunction
 	 */
 	public AccessorFunction(String name)
 	{
-		this(name, UNDEFINED_INDEX);
-	}
-
-	/**
-	 * Construct an accessor function for a given field, which is a collection
-	 * or array, and choose the nth element.
-	 * 
-	 * @param name the name of an attribute or field of an object (which is a collection or array).
-	 * @param index the index into which element of the collection to return.
-	 */
-	public AccessorFunction(String name, int index)
-	{
 		this.attributeName = name;
-		this.index = index;
-	}
-
-	@SuppressWarnings("rawtypes")
-    public Object perform(Map argument)
-	{
-    	return ((Map) argument).get(attributeName);		
 	}
 
 	/**
@@ -76,7 +54,12 @@ implements UnaryFunction
 	public Object perform(Object argument)
 	throws FunctionException
 	{
-	    try
+		if (Map.class.isAssignableFrom(argument.getClass()))
+		{
+	    	return ((Map) argument).get(attributeName);		
+		}
+
+		try
         {
 	    	Field f = argument.getClass().getDeclaredField(attributeName);
 	    	f.setAccessible(true);

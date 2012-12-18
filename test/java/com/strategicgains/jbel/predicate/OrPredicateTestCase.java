@@ -17,7 +17,6 @@ package com.strategicgains.jbel.predicate;
 
 import junit.framework.TestCase;
 
-import com.strategicgains.jbel.Literals;
 import com.strategicgains.jbel.expression.Expression;
 
 public class OrPredicateTestCase
@@ -26,28 +25,28 @@ extends TestCase
 	public void testEvaluateTrue()
 	throws Exception
 	{
-		Expression expression = new OrPredicate(Literals.TRUE, Literals.TRUE);
+		Expression expression = new OrPredicate(LiteralPredicate.TRUE, LiteralPredicate.TRUE);
 		assertTrue(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 
 	public void testEvaluateTrueWithOneFalse()
 	throws Exception
 	{
-		Expression expression = new OrPredicate(Literals.TRUE, Literals.FALSE);
+		Expression expression = new OrPredicate(LiteralPredicate.TRUE, LiteralPredicate.FALSE);
 		assertTrue(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 
 	public void testEvaluateTrueWithOneFalseReverse()
 	throws Exception
 	{
-		Expression expression = new OrPredicate(Literals.FALSE, Literals.TRUE);
+		Expression expression = new OrPredicate(LiteralPredicate.FALSE, LiteralPredicate.TRUE);
 		assertTrue(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 
 	public void testEvaluateFalse()
 	throws Exception
 	{
-		Expression expression = new OrPredicate(Literals.FALSE, Literals.FALSE);
+		Expression expression = new OrPredicate(LiteralPredicate.FALSE, LiteralPredicate.FALSE);
 		assertFalse(((Boolean)expression.evaluate(null)).booleanValue());
 	}
 }

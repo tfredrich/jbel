@@ -39,7 +39,7 @@ public class ConditionalExpressionTestCase
 		
 		SelectExpressionBuilder select2 = new SelectExpressionBuilder();
 		select2.field("stringValue");
-		Expression trueExpr = select2.getExpression();
+		Expression trueExpr = select2.build();
 
 		Expression falseExpr = new LiteralExpression("N/A");
 		expression = new ConditionalExpression(predicate, trueExpr, falseExpr);

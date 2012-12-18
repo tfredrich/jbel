@@ -22,10 +22,9 @@ import com.strategicgains.jbel.exception.EvaluationException;
  * 
  * @author Todd Fredrich
  * @since Aug 22, 2005
- * @version $Revision: 1.6 $
  */
 public abstract class UnaryExpression
-extends AbstractExpression
+implements Expression
 {
 	private Expression operand;
 	

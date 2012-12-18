@@ -15,13 +15,12 @@
 */
 package com.strategicgains.jbel.expression;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.function.ToLowerFunction;
 
 public class ToLowerExpression
-	extends UnaryExpression
+extends UnaryExpression
 {
-	private ToLowerFunction function = new ToLowerFunction();
+	private static final ToLowerFunction FUNCTION = new ToLowerFunction();
 	
 	public ToLowerExpression(Expression expression)
 	{
@@ -29,8 +28,7 @@ public class ToLowerExpression
 	}
 
 	protected Object evaluateResults(Object argument)
-		throws EvaluationException
 	{
-		return function.perform(argument);
+		return FUNCTION.perform(argument);
 	}
 }

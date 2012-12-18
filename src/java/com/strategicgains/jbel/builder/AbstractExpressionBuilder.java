@@ -33,8 +33,8 @@ public abstract class AbstractExpressionBuilder
 	{
 		super();
 	}
-	
-	public Expression getExpression()
+
+	public Expression build()
 	{
 		return expression;
 	}

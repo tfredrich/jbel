@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.predicate;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 
 /**
  * Implements Predicate, overriding the evaluate method of Expression to call
@@ -27,7 +26,6 @@ public abstract class AbstractPredicate
 implements Predicate
 {
 	public Object evaluate(Object object)
-		throws EvaluationException
 	{
 		return Boolean.valueOf(test(object));
 	}
