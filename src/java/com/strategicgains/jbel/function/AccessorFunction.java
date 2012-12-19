@@ -33,6 +33,7 @@ implements UnaryFunction
 	 * The name of an object attribute from which a value will be retrieved.
 	 */
 	private String attributeName;
+	private Field field = null;
 	
 	/**
 	 * Construct an accessor function for a given field name.
@@ -61,9 +62,13 @@ implements UnaryFunction
 
 		try
         {
-	    	Field f = argument.getClass().getDeclaredField(attributeName);
-	    	f.setAccessible(true);
-	        return f.get(argument);
+			if (field == null)
+			{
+		    	field = argument.getClass().getDeclaredField(attributeName);
+		    	field.setAccessible(true);
+			}
+
+			return field.get(argument);
         }
         catch (Exception e)
         {
