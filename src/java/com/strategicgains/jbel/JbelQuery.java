@@ -20,14 +20,14 @@ import java.util.Iterator;
 import com.strategicgains.jbel.expression.AccessorExpression;
 import com.strategicgains.jbel.expression.AggregationExpression;
 import com.strategicgains.jbel.expression.Expression;
-import com.strategicgains.jbel.predicate.PredicateExpression;
+import com.strategicgains.jbel.expression.MetaExpression;
 import com.strategicgains.jbel.util.ArrayStack;
 import com.strategicgains.jbel.util.Stack;
 
 /**
  * Supports navigation and dissection of an object model.
  * 
- * @author fredta2
+ * @author toddf
  * @since Dec 18, 2012
  */
 public class JbelQuery
@@ -78,9 +78,15 @@ public class JbelQuery
 //		return this;
 //	}
 
-	public JbelQuery where(PredicateExpression predicate)
+	public JbelQuery where(WhereClause whereClause)
 	{
-		
+		expressions.push(new MetaExpression(expressions.pop(), whereClause));
+		return this;
+	}
+
+	public JbelQuery orderBy(OrderByClause orderByClause)
+	{
+		expressions.push(orderByClause.asExpression());
 		return this;
 	}
 	
@@ -96,11 +102,6 @@ public class JbelQuery
 		
 		return results;
 	}
-
-	private boolean isAccessorExpression(Expression expression)
-    {
-	    return AccessorExpression.class.isAssignableFrom(expression.getClass());
-    }
 
 	private boolean isAggregationExpression(Expression expression)
     {

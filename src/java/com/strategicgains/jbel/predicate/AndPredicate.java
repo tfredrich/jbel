@@ -17,9 +17,10 @@ package com.strategicgains.jbel.predicate;
 
 import com.strategicgains.jbel.expression.Expression;
 
-
-
-
+/**
+ * 
+ * @author toddf
+ */
 public class AndPredicate
 extends BinaryPredicate
 {

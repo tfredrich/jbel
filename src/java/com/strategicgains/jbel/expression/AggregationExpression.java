@@ -16,6 +16,7 @@
 package com.strategicgains.jbel.expression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,30 @@ implements Expression
 	@Override
 	public Object evaluate(Object argument)
 	{
+		if (Collection.class.isAssignableFrom(argument.getClass()))
+		{
+			return evaluateOverCollection((Collection<?>) argument);
+		}
+		else
+		{
+			return evaluateOverObject(argument);
+		}
+	}
+
+	private Object evaluateOverCollection(Collection<?> collection)
+    {
+		List<Object> results = new ArrayList<Object>();
+		
+		for (Object element : collection)
+		{
+			results.add(evaluateOverObject(element));
+		}
+
+		return results;
+    }
+
+	private Object evaluateOverObject(Object argument)
+    {
 		Map<String, Object> results = new HashMap<String, Object>();
 
 		for (AccessorExpression accessor : accessors)
@@ -56,6 +81,6 @@ implements Expression
 		}
 		
 		return results;
-	}
+    }
 
 }

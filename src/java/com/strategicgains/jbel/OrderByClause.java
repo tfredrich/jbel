@@ -13,9 +13,12 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package com.strategicgains.jbel.builder;
+package com.strategicgains.jbel;
+
+import java.util.Collection;
 
 import com.strategicgains.jbel.CollationOrder;
+import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.AccessorExpression;
 import com.strategicgains.jbel.expression.CollationExpression;
 
@@ -28,16 +31,17 @@ import com.strategicgains.jbel.expression.CollationExpression;
  * @since Aug 26, 2005
  * @version $Revision: 1.2 $
  */
-public class CollationExpressionBuilder<T>
-extends AbstractExpressionBuilder
+public class OrderByClause
 {
+	private CollationExpression expression;
+
 	/**
 	 * Create a new CollationExpressionBuilder().
 	 */
-	public CollationExpressionBuilder()
+	public OrderByClause()
 	{
 		super();
-		setExpression(new CollationExpression<T>());
+		this.expression = new CollationExpression();
 	}
 
 	/**
@@ -46,7 +50,7 @@ extends AbstractExpressionBuilder
 	 * @param attributeName the name of the object attribute to order on.
 	 * @return CollationExpressionBuilder to facilitate chaining (e.g. builder.attribute("x").attribute("y"))
 	 */
-	public CollationExpressionBuilder<T> orderBy(String attributeName)
+	public OrderByClause orderBy(String attributeName)
 	{
 		return orderBy(attributeName, CollationOrder.ASCENDING);
 	}
@@ -58,9 +62,9 @@ extends AbstractExpressionBuilder
 	 * @param sortOrder the sort order to use (ASCENDING or DESCENDING)
 	 * @return CollationExpressionBuilder to facilitate chaining (e.g. builder.attribute("x").attribute("y"))
 	 */
-	public CollationExpressionBuilder<T> orderBy(String attributeName, CollationOrder sortOrder)
+	public OrderByClause orderBy(String attributeName, CollationOrder sortOrder)
 	{
-		((CollationExpression<T>) build()).orderBy(attributeName, sortOrder);
+		expression.orderBy(attributeName, sortOrder);
 		return this;
 	}
 	
@@ -71,9 +75,14 @@ extends AbstractExpressionBuilder
 	 * @param sortOrder the sort order to use (ASCENDING or DESCENDING)
 	 * @return CollationExpressionBuilder to facilitate chaining (e.g. builder.attribute("x").attribute("y"))
 	 */
-	public CollationExpressionBuilder<T> orderBy(AccessorExpression expression, CollationOrder sortOrder)
+	public OrderByClause orderBy(AccessorExpression expression, CollationOrder sortOrder)
 	{
-		((CollationExpression<T>) build()).orderBy(expression, sortOrder);
+		this.expression.orderBy(expression, sortOrder);
 		return this;
+	}
+	
+	public CollationExpression asExpression()
+	{
+		return expression;
 	}
 }

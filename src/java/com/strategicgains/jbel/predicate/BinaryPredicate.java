@@ -19,7 +19,7 @@ import com.strategicgains.jbel.expression.BinaryExpression;
 import com.strategicgains.jbel.expression.Expression;
 
 /**
- * A BinaryPredicate is an Expression that evaluates over a two sub-expressions, returning true or false.  
+ * A BinaryPredicate is an Expression that evaluates over two sub-expressions, returning true or false.  
  * While the evaluate() method returns an instance of type Object, the test() method returns type boolean.  
  * 
  * @author Todd Fredrich

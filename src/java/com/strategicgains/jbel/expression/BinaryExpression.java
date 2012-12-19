@@ -52,7 +52,6 @@ implements Expression
 	}
 	
 	public Object evaluate(Object argument)
-	throws EvaluationException
 	{
 		Object leftResult = leftOperand.evaluate(argument);
 		Object rightResult = rightOperand.evaluate(argument);

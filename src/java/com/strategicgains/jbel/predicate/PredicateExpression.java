@@ -25,7 +25,8 @@ extends BinaryPredicate
 		super(leftExpression, rightExpression);
 	}
 
-	public int compare(Object object1, Object object2)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+    public int compare(Object object1, Object object2)
 	{
 		int result = 0;
 
