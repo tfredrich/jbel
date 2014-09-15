@@ -20,7 +20,7 @@ import java.util.Collection;
 import com.strategicgains.jbel.expression.Expression;
 
 public class IsInPredicate
-	extends PredicateExpression
+	extends AbstractBinaryPredicate
 {
 	public IsInPredicate(Expression leftExpression, Expression rightExpression)
 	{

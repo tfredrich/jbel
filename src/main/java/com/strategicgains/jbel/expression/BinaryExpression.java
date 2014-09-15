@@ -25,7 +25,7 @@ import com.strategicgains.jbel.exception.EvaluationException;
  * @version $Revision: 1.6 $
  */
 public abstract class BinaryExpression
-	extends AbstractExpression
+implements Expression
 {
 	private Expression leftOperand;
 	private Expression rightOperand;

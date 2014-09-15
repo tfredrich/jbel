@@ -27,7 +27,7 @@ import com.strategicgains.jbel.exception.EvaluationException;
  * @version $Revision: 1.4 $
  */
 public class LiteralExpression
-	extends AbstractExpression
+implements Expression
 {
 	/**
 	 * The internal value of this literal expression.
@@ -78,7 +78,7 @@ public class LiteralExpression
 	 * Simply returns the value of the literal as an Object.
 	 */
 	public Object evaluate(Object argument)
-		throws EvaluationException
+	throws EvaluationException
 	{
 		return literal;
 	}

@@ -18,10 +18,10 @@ package com.strategicgains.jbel.predicate;
 import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.Expression;
 
-public abstract class PredicateExpression
+public abstract class AbstractBinaryPredicate
 extends BinaryPredicate
 {
-	public PredicateExpression(Expression leftExpression, Expression rightExpression)
+	public AbstractBinaryPredicate(Expression leftExpression, Expression rightExpression)
 	{
 		super(leftExpression, rightExpression);
 	}

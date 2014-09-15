@@ -19,9 +19,11 @@ import com.strategicgains.jbel.expression.Expression;
 
 
 
-
+/**
+ * @author toddf
+ */
 public class OrPredicate
-	extends BinaryPredicate
+extends BinaryPredicate
 {
 	public OrPredicate(Expression leftExpression, Expression rightExpression)
 	{

@@ -17,11 +17,8 @@ package com.strategicgains.jbel.predicate;
 
 import com.strategicgains.jbel.expression.Expression;
 
-
-
-
 public class AndPredicate
-	extends BinaryPredicate
+extends BinaryPredicate
 {
 	public AndPredicate(Expression leftExpression, Expression rightExpression)
 	{

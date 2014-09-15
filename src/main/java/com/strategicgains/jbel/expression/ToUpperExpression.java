@@ -19,7 +19,7 @@ import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.function.ToUpperFunction;
 
 public class ToUpperExpression
-	extends UnaryExpression
+extends UnaryExpression
 {
 	private ToUpperFunction function = new ToUpperFunction();
 

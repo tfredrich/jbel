@@ -25,7 +25,6 @@ import com.strategicgains.jbel.expression.Expression;
  * 
  * @author Todd Fredrich
  * @since Jan 26, 2006
- * @version $Revision: 1.5 $
  */
 public abstract class BinaryPredicate
 extends BinaryExpression

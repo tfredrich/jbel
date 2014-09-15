@@ -42,8 +42,7 @@ import com.strategicgains.jbel.function.ComparingFunction;
  * @version $Revision: 1.2 $
  */
 public class CollationExpression<T>
-extends AbstractExpression
-implements Comparator<T>, Serializable
+implements Expression, Comparator<T>, Serializable
 {
 	// SECTION: CONSTANTS
 

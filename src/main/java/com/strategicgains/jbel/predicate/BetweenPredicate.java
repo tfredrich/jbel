@@ -1,5 +1,5 @@
 /*
-	Copyright 2005 Strategic Gains, Inc.
+	Copyright 2006 Strategic Gains, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import com.strategicgains.jbel.expression.Expression;
  * 
  * @author Todd Fredrich
  * @since Jan 26, 2006
- * @version $Revision: 1.5 $
  */
 public class BetweenPredicate
 	extends UnaryPredicate

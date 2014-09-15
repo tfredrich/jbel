@@ -19,7 +19,7 @@ import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.Expression;
 
 public class LessThanOrEqualPredicate
-	extends PredicateExpression
+	extends AbstractBinaryPredicate
 {
 	public LessThanOrEqualPredicate(Expression leftExpression, Expression rightExpression)
 	{

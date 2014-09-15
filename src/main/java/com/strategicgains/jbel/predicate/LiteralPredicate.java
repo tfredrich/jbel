@@ -16,7 +16,6 @@
 package com.strategicgains.jbel.predicate;
 
 import com.strategicgains.jbel.exception.EvaluationException;
-import com.strategicgains.jbel.expression.AbstractExpression;
 
 /**
  * LiteralPredicate represents a literal or constant value as an expression that returns only true or false.  The 
@@ -27,8 +26,7 @@ import com.strategicgains.jbel.expression.AbstractExpression;
  * @version $Revision: 1.3 $
  */
 public class LiteralPredicate
-	extends AbstractExpression
-	implements Predicate
+implements Predicate
 {
 	/**
 	 * The internal value of this literal expression.

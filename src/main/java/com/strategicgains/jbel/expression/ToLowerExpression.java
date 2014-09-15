@@ -19,7 +19,7 @@ import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.function.ToLowerFunction;
 
 public class ToLowerExpression
-	extends UnaryExpression
+extends UnaryExpression
 {
 	private ToLowerFunction function = new ToLowerFunction();
 	

@@ -29,5 +29,5 @@ public interface Predicate
 extends Expression
 {
 	public boolean test(Object argument)
-		throws EvaluationException;
+	throws EvaluationException;
 }

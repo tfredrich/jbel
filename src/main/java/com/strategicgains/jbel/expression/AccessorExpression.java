@@ -30,7 +30,7 @@ import com.strategicgains.jbel.function.AccessorFunction;
  * @version $Revision: 1.7 $
  */
 public class AccessorExpression
-extends AbstractExpression
+implements Expression
 {
 	/**
 	 * A list of AccessorFunction instances that retrieve the field values from an object.

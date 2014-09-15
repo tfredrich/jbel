@@ -28,7 +28,7 @@ import com.strategicgains.jbel.predicate.Predicate;
  * @version $Revision: 1.7 $
  */
 public class ConditionalExpression
-extends AbstractExpression
+implements Expression
 {
 	/**
 	 * The expression to evaluate that determines which of the other expressions to evaluate.
