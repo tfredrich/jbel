@@ -20,10 +20,10 @@ Collection Operations
 
 The following examples should get you going on your understanding and justification for use of JBEL. After a look, the benefits are obvious, especially when considering the amount of copy-n-paste coding that often happens around comparing and filtering. For additional examples, check out the unit tests in the source code (available at SourceForge).
 
-Filtering (e.g. select() operation)
------------------------------------
+Filtering
+---------
 
-Filtering a collection is the act of selecting elements from the collection that meet certain criteria.
+Filtering a collection is the act of selecting elements from the collection that meet certain criteria. This is accomplished via the select() operation.
 
 Before JBEL
 
@@ -74,4 +74,57 @@ Collection results = CollectionUtils.select(toFilter, new AbstractPredicate()
     }
   }
 );
+```
+
+Sorting/Collation
+-----------------
+
+Ordinarily, to accomplish ordering in a collection, you much implement Comparable or implement a Comparator.
+With JBEL you can simply create a Comparator at runtime using a CollationExpressionBuilder.
+
+Before JBEL
+
+```java
+public class PersonNameComparator
+implements Comparator
+{
+  public int compare(Object obj1, Object obj2)
+  {
+    Person person1 = (Person) obj1;
+    Person person2 = (Person) obj2;
+    int result = person1.getLastName()
+      .compareTo(person2.getLastName());
+
+    if (result == 0)
+    {
+      result = person1.getFirstName()
+        .compareTo(person2.getFirstName());
+    }
+
+    if (result == 0)
+    {
+      result = person1.getMiddleInitial()
+        .compareTo(person2.getMiddleInitial());
+    }
+
+    return result;
+  }
+}
+
+Collections.sort(peopleToSort, new PersonNameComparator());
+```
+
+After JBEL
+
+```java
+// Build a CollationExpression...
+CollationExpressionBuilder orderBy = CollectionUtils.newCollationExpressionBuilder();
+orderBy.attribute("lastName")
+  .attribute("firstName")
+  .attribute("middleInitial");
+
+// Call Collections.sort() directly...
+Collections.sort(peopleToSort, orderBy.getExpression());
+// or... call Collections.sort() indirectly by simply evaluating the expression...
+orderBy.evaluate(peopleToSort);
 ```
