@@ -15,10 +15,13 @@
 */
 package com.strategicgains.jbel.builder;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.strategicgains.jbel.CollectionUtils;
 import com.strategicgains.jbel.domain.TestObject;
@@ -26,19 +29,19 @@ import com.strategicgains.jbel.expression.AccessorExpression;
 import com.strategicgains.jbel.expression.CollationExpression;
 import com.strategicgains.jbel.predicate.Predicate;
 
-public class ExpressionBuilderTestCase
-	extends TestCase
+public class PredicateBuilderTest
 {
-	private ExpressionBuilder expression;
+	private PredicateBuilder predicateBuilder;
 	private CollationExpressionBuilder<TestObject> orderBy;
 	private List<TestObject> objects;
 	private TestObject parent1;
 	private TestObject parent2;
 	private List<TestObject> parents;
-	
+
+	@Before
 	public void setUp()
 	{
-		expression = new ExpressionBuilder();
+		predicateBuilder = new PredicateBuilder();
 		orderBy = new CollationExpressionBuilder<TestObject>();
 		objects = buildObjectsList();
 		setupParents();
@@ -74,19 +77,21 @@ public class ExpressionBuilderTestCase
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.select()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.select()'
 	 */
+	@Test
 	public void testSelectEquals()
 	throws Exception
 	{
-		expression.field("intValue").equalTo(5);
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.field("intValue").equalTo(5);
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.select()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.select()'
 	 */
+	@Test
 	public void testSelectIsIn()
 	throws Exception
 	{
@@ -98,45 +103,49 @@ public class ExpressionBuilderTestCase
 			Integer.valueOf(7)
 		};
 		
-		expression.field("intValue").isIn(values);
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.field("intValue").isIn(values);
+		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(4, result.size());
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.select()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.select()'
 	 */
+	@Test
 	public void testSelectIsInWithInsideSelect()
 	throws Exception
 	{
 		
 		List<TestObject> values = (List<TestObject>) new AccessorExpression("intValue").evaluate(objects);
-		expression.field("intValue").isIn(values);
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.field("intValue").isIn(values);
+		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(13, result.size());
 	}
 
+	@Test
 	public void testSelectToUpper()
 	throws Exception
 	{
-		expression.toUpper(expression.field("name")).equalTo("FIVE");
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.toUpper(predicateBuilder.field("name")).equalTo("FIVE");
+		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(1, result.size());
 		assertEquals(5, ((TestObject)result.get(0)).getIntValue());
 	}
 
+	@Test
 	public void testSelectToLower()
 	throws Exception
 	{
-		expression.toLower(expression.field("name")).equalTo("eight");
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.toLower(predicateBuilder.field("name")).equalTo("eight");
+		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(1, result.size());
 		assertEquals(8, ((TestObject)result.get(0)).getIntValue());
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.orderBy()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.orderBy()'
 	 */
+	@Test
 	public void testSelectWithOrderBy()
 	throws Exception
 	{
@@ -148,9 +157,9 @@ public class ExpressionBuilderTestCase
 			Integer.valueOf(7)
 		};
 		
-		expression.field("intValue").isIn(values);
+		predicateBuilder.field("intValue").isIn(values);
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(4, results.size());
 		assertEquals(1, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(3, ((TestObject)results.get(1)).getIntValue());
@@ -159,95 +168,102 @@ public class ExpressionBuilderTestCase
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.select()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.select()'
 	 */
+	@Test
 	public void testSelectWithAnd()
 	throws Exception
 	{
-		expression.field("name").equalTo("five")
-			.and(expression.field("stringValue").equalTo("5"))
-			.and(expression.field("intValue").equalTo(5));
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.field("name").equalTo("five")
+			.and(predicateBuilder.field("stringValue").equalTo("5"))
+			.and(predicateBuilder.field("intValue").equalTo(5));
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(1, results.size());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.select()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.select()'
 	 */
+	@Test
 	public void testSelectWithNonsensicalAnd()
 	throws Exception
 	{
-		expression.field("stringValue").equalTo("3")
-			.and(expression.field("intValue").equalTo(5))
-			.and(expression.field("name").equalTo("five"));
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.field("stringValue").equalTo("3")
+			.and(predicateBuilder.field("intValue").equalTo(5))
+			.and(predicateBuilder.field("name").equalTo("five"));
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(0, results.size());
 	}
 
 	/*
-	 * Test method for 'com.strategicgains.jbel.builder.ExpressionBuilder.select()'
+	 * Test method for 'com.strategicgains.jbel.builder.PredicateBuilder.select()'
 	 */
+	@Test
 	public void testSelectWithOr()
 	throws Exception
 	{
-		expression.field("intValue").equalTo(5)
-			.or(expression.field("name").equalTo("nine"))
-			.or(expression.field("stringValue").equalTo("3"));
+		predicateBuilder.field("intValue").equalTo(5)
+			.or(predicateBuilder.field("name").equalTo("nine"))
+			.or(predicateBuilder.field("stringValue").equalTo("3"));
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(3, results.size());
 		assertEquals(3, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(5, ((TestObject)results.get(1)).getIntValue());
 		assertEquals(9, ((TestObject)results.get(2)).getIntValue());
 	}
 	
+	@Test
 	public void testSelectWithAndOr()
 	throws Exception
 	{
-		expression.field("name").equalTo("five")
-			.and(expression.field("stringValue").equalTo("5"))
-			.and(expression.field("intValue").equalTo(5))
-			.or(expression.field("name").equalTo("nine2")
-				.and(expression.field("stringValue").equalTo("9"))
-				.and(expression.field("intValue").equalTo(9)));
+		predicateBuilder.field("name").equalTo("five")
+			.and(predicateBuilder.field("stringValue").equalTo("5"))
+			.and(predicateBuilder.field("intValue").equalTo(5))
+			.or(predicateBuilder.field("name").equalTo("nine2")
+				.and(predicateBuilder.field("stringValue").equalTo("9"))
+				.and(predicateBuilder.field("intValue").equalTo(9)));
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(2, results.size());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(9, ((TestObject)results.get(1)).getIntValue());
 	}
 
+	@Test
 	public void testOneToOneAttributeSelect()
 	throws Exception
 	{
-		expression.field("parent").field("intValue").equalTo(99);
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		predicateBuilder.field("parent").field("intValue").equalTo(99);
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression());
 		assertEquals(7, results.size());
 	}
 
+	@Test
 	public void testMultipleGetExpressionCalls()
 	throws Exception
 	{
-		expression.field("intValue").equalTo(5)
-			.or(expression.field("name").equalTo("nine"))
-			.or(expression.field("stringValue").equalTo("3"));
-		expression.getExpression();
-		expression.getExpression();
+		predicateBuilder.field("intValue").equalTo(5)
+			.or(predicateBuilder.field("name").equalTo("nine"))
+			.or(predicateBuilder.field("stringValue").equalTo("3"));
+		predicateBuilder.getExpression();
+		predicateBuilder.getExpression();
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(3, results.size());
 		assertEquals(3, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(5, ((TestObject)results.get(1)).getIntValue());
 		assertEquals(9, ((TestObject)results.get(2)).getIntValue());
 	}
 
+	@Test
 	public void testSelectBetween()
 	throws Exception
 	{
-		expression.field("intValue").between(3, 5);
+		predicateBuilder.field("intValue").between(3, 5);
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) predicateBuilder.getExpression(), (CollationExpression) orderBy.getExpression());
 		assertEquals(3, results.size());
 		assertEquals(3, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(4, ((TestObject)results.get(1)).getIntValue());

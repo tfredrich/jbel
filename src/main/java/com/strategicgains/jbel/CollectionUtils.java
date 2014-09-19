@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.strategicgains.jbel.builder.CollationExpressionBuilder;
-import com.strategicgains.jbel.builder.SelectExpressionBuilder;
+import com.strategicgains.jbel.builder.PredicateBuilder;
 import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.exception.FunctionException;
 import com.strategicgains.jbel.expression.CollationExpression;
@@ -36,9 +36,9 @@ public abstract class CollectionUtils
 {
 	//SECTION: FACTORIES - CONVENIENCE
 	
-	public static SelectExpressionBuilder newSelectExpressionBuilder()
+	public static PredicateBuilder newSelectExpressionBuilder()
 	{
-		return new SelectExpressionBuilder();
+		return new PredicateBuilder();
 	}
 	
 	public static CollationExpressionBuilder newCollationExpressionBuilder()

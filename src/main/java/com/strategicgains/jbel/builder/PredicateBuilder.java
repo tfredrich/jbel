@@ -1,5 +1,5 @@
 /*
-	Copyright 2014 Strategic Gains, Inc.
+	Copyright 2005 Strategic Gains, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -34,24 +34,31 @@ import com.strategicgains.jbel.predicate.LessThanPredicate;
 import com.strategicgains.jbel.predicate.OrPredicate;
 
 /**
- * ExpressionBuilder is used to construct expressions using a DSL.
+ * PredicateExpressionBuilder is used to construct expressions usable in Expressions.select() in in-fix notation.
  * 
  * @author Todd Fredrich
- * @since Sep 15, 2014
+ * @since Aug 26, 2005
+ * @version $Revision: 1.17 $
  */
-public class ExpressionBuilder
+public class PredicateBuilder
 extends AbstractExpressionBuilder
 {
-	public ExpressionBuilder()
+	public PredicateBuilder(Expression expression)
+	{
+		this();
+		setExpression(expression);
+	}
+
+	public PredicateBuilder()
 	{
 		super();
 	}
 	
 	// BUILDER METHODS
 
-	public ExpressionBuilder field(String name)
+	public PredicateBuilder field(String name)
 	{
-		ExpressionBuilder result = this;
+		PredicateBuilder result = this;
 		
 		if (getExpression() != null)
 		{
@@ -61,7 +68,7 @@ extends AbstractExpressionBuilder
 			}
 			else
 			{
-				result = new ExpressionBuilder();
+				result = new PredicateBuilder();
 				result.setExpression(new AccessorExpression(name));
 			}
 		}
@@ -72,161 +79,171 @@ extends AbstractExpressionBuilder
 
 		return result;
 	}
+	
+	public PredicateBuilder fields(String... names)
+	{
+		return this;
+	}
 
-	public ExpressionBuilder between(int low, int high)
+	public PredicateBuilder index(int index)
+	{
+		return this;
+	}
+
+	public PredicateBuilder between(int low, int high)
 	{
 		return between(new LiteralExpression(low), new LiteralExpression(high));
 	}
 	
-	public ExpressionBuilder between(double low, double high)
+	public PredicateBuilder between(double low, double high)
 	{
 		return between(new LiteralExpression(low), new LiteralExpression(high));
 	}
 	
-	public ExpressionBuilder between(long low, long high)
+	public PredicateBuilder between(long low, long high)
 	{
 		return between(new LiteralExpression(low), new LiteralExpression(high));
 	}
 	
-	public ExpressionBuilder between(Object low, Object high)
+	public PredicateBuilder between(Object low, Object high)
 	{
 		return between(new LiteralExpression(low), new LiteralExpression(high));
 	}
 	
-	public ExpressionBuilder between(Expression low, Expression high)
+	public PredicateBuilder between(Expression low, Expression high)
 	{
 		setExpression(new BetweenPredicate(getExpression(), low, high));
 		return this;
 	}
 	
-	public ExpressionBuilder equalTo(int value)
+	public PredicateBuilder equalTo(int value)
 	{
 		return equalTo(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder equalTo(double value)
+	public PredicateBuilder equalTo(double value)
 	{
 		return equalTo(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder equalTo(long value)
+	public PredicateBuilder equalTo(long value)
 	{
 		return equalTo(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder equalTo(Object value)
+	public PredicateBuilder equalTo(Object value)
 	{
 		return equalTo(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder equalTo(Expression value)
+	public PredicateBuilder equalTo(Expression value)
 	{
 		setExpression(new EqualityPredicate(getExpression(), value));
 		return this;
 	}
 	
-	public ExpressionBuilder lessThan(int value)
+	public PredicateBuilder lessThan(int value)
 	{
 		return lessThan(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder lessThan(double value)
+	public PredicateBuilder lessThan(double value)
 	{
 		return lessThan(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder lessThan(long value)
+	public PredicateBuilder lessThan(long value)
 	{
 		return lessThan(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder lessThan(Expression value)
+	public PredicateBuilder lessThan(Expression value)
 	{
 		setExpression(new LessThanPredicate(getExpression(), value));
 		return this;
 	}
 	
-	public ExpressionBuilder lessThanOrEqual(int value)
+	public PredicateBuilder lessThanOrEqual(int value)
 	{
 		return lessThanOrEqual(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder lessThanOrEqual(double value)
+	public PredicateBuilder lessThanOrEqual(double value)
 	{
 		return lessThanOrEqual(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder lessThanOrEqual(long value)
+	public PredicateBuilder lessThanOrEqual(long value)
 	{
 		return lessThanOrEqual(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder lessThanOrEqual(Expression value)
+	public PredicateBuilder lessThanOrEqual(Expression value)
 	{
 		setExpression(new LessThanOrEqualPredicate(getExpression(), value));
 		return this;
 	}
 	
-	public ExpressionBuilder greaterThan(int value)
+	public PredicateBuilder greaterThan(int value)
 	{
 		return greaterThan(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder greaterThan(double value)
+	public PredicateBuilder greaterThan(double value)
 	{
 		return greaterThan(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder greaterThan(long value)
+	public PredicateBuilder greaterThan(long value)
 	{
 		return greaterThan(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder greaterThan(Expression value)
+	public PredicateBuilder greaterThan(Expression value)
 	{
 		setExpression(new GreaterThanPredicate(getExpression(), value));
 		return this;
 	}
 	
-	public ExpressionBuilder greaterThanOrEqual(int value)
+	public PredicateBuilder greaterThanOrEqual(int value)
 	{
 		return greaterThanOrEqual(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder greaterThanOrEqual(double value)
+	public PredicateBuilder greaterThanOrEqual(double value)
 	{
 		return greaterThanOrEqual(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder greaterThanOrEqual(long value)
+	public PredicateBuilder greaterThanOrEqual(long value)
 	{
 		return greaterThanOrEqual(new LiteralExpression(value));
 	}
 	
-	public ExpressionBuilder greaterThanOrEqual(Expression value)
+	public PredicateBuilder greaterThanOrEqual(Expression value)
 	{
 		setExpression(new GreaterThanOrEqualPredicate(getExpression(), value));
 		return this;
 	}
 
-	public ExpressionBuilder isIn(Object[] values)
+	public PredicateBuilder isIn(Object[] values)
 	{
 		return isIn(Arrays.asList(values));
 	}
 
-	public ExpressionBuilder isIn(List<?> values)
+	public PredicateBuilder isIn(List<?> values)
 	{
 		setExpression(new IsInPredicate(getExpression(), new LiteralExpression(values)));
 		return this;
 	}
 	
-	public ExpressionBuilder toUpper(ExpressionBuilder builder)
+	public PredicateBuilder toUpper(PredicateBuilder builder)
 	{
 		setExpression(new ToUpperExpression(builder.getExpression()));
 		return this;
 	}
 	
-	public ExpressionBuilder toLower(ExpressionBuilder builder)
+	public PredicateBuilder toLower(PredicateBuilder builder)
 	{
 		setExpression(new ToLowerExpression(builder.getExpression()));
 		return this;
@@ -234,13 +251,13 @@ extends AbstractExpressionBuilder
 
 	// LOGICALS
 
-	public ExpressionBuilder and(ExpressionBuilder subExpressionBuilder)
+	public PredicateBuilder and(PredicateBuilder subExpressionBuilder)
 	{
 		setExpression(new AndPredicate(getExpression(), subExpressionBuilder.getExpression()));
 		return this;
 	}
 
-	public ExpressionBuilder or(ExpressionBuilder subExpressionBuilder)
+	public PredicateBuilder or(PredicateBuilder subExpressionBuilder)
 	{
 		setExpression(new OrPredicate(getExpression(), subExpressionBuilder.getExpression()));
 		return this;

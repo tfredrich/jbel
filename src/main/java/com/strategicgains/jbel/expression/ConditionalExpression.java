@@ -25,7 +25,6 @@ import com.strategicgains.jbel.predicate.Predicate;
  * 
  * @author Todd Fredrich
  * @since Aug 22, 2005
- * @version $Revision: 1.7 $
  */
 public class ConditionalExpression
 implements Expression
@@ -33,24 +32,24 @@ implements Expression
 	/**
 	 * The expression to evaluate that determines which of the other expressions to evaluate.
 	 */
-	private Predicate logicalExpression;
+	private Predicate predicate;
 	
 	/**
-	 * The expression that gets evaluated (and the value returned) if the logigal expression evaluates to true.
+	 * The expression that gets evaluated (and the value returned) if the predicate evaluates to true.
 	 */
 	private Expression trueExpression;
 	
 	/**
-	 * The expression that gets evaluated (and the value returned) if the logigal expression evaluates to false.
+	 * The expression that gets evaluated (and the value returned) if the predicate evaluates to false.
 	 */
 	private Expression falseExpression;
 
 	/**
 	 * Construct a new conditional expression instance.
 	 */
-	public ConditionalExpression(Predicate logicalExpression, Expression trueExpression, Expression falseExpression)
+	public ConditionalExpression(Predicate predicate, Expression trueExpression, Expression falseExpression)
 	{
-		this.logicalExpression = logicalExpression;
+		this.predicate = predicate;
 		this.trueExpression = trueExpression;
 		this.falseExpression = falseExpression;
 	}
@@ -70,9 +69,9 @@ implements Expression
 	 * 
 	 * @return the logical expression.
 	 */
-	public Expression getLogicalExpression()
+	public Expression getPredicate()
 	{
-		return logicalExpression;
+		return predicate;
 	}
 
 	/**
@@ -92,9 +91,9 @@ implements Expression
 	 * @see com.strategicgains.jbel.function.UnaryFunction#perform(java.lang.Object)
 	 */
 	public Object evaluate(Object argument)
-		throws EvaluationException
+	throws EvaluationException
 	{
-		if (logicalExpression.test(argument))
+		if (predicate.test(argument))
 		{
 			return trueExpression.evaluate(argument);
 		}
@@ -103,5 +102,4 @@ implements Expression
 			return falseExpression.evaluate(argument);
 		}
 	}
-
 }

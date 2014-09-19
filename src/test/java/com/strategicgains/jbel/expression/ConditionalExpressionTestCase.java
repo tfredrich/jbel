@@ -17,7 +17,7 @@ package com.strategicgains.jbel.expression;
 
 import junit.framework.TestCase;
 
-import com.strategicgains.jbel.builder.SelectExpressionBuilder;
+import com.strategicgains.jbel.builder.PredicateBuilder;
 import com.strategicgains.jbel.domain.TestObject;
 import com.strategicgains.jbel.predicate.BetweenPredicate;
 import com.strategicgains.jbel.predicate.Predicate;
@@ -37,7 +37,7 @@ public class ConditionalExpressionTestCase
 			new LiteralExpression(3), 
 			new LiteralExpression(5));
 		
-		SelectExpressionBuilder select2 = new SelectExpressionBuilder();
+		PredicateBuilder select2 = new PredicateBuilder();
 		select2.field("stringValue");
 		Expression trueExpr = select2.getExpression();
 

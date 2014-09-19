@@ -39,7 +39,7 @@ public abstract class AbstractExpressionBuilder
 		return expression;
 	}
 	
-	protected void setExpression(Expression expression)
+	public void setExpression(Expression expression)
 	{
 		this.expression = expression;
 	}
