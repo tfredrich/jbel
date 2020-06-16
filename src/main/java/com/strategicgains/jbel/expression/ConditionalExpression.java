@@ -20,7 +20,7 @@ import com.strategicgains.jbel.predicate.Predicate;
 
 
 /**
- * An if-then-else expression.
+ * An if-then-else expression. Essentially, it operates as "if ('predicate') then 'thenExpression' else 'elseExpression'"
  * 
  * A conditional expression is a ternary expression that evaluates the logical (predicate) expression and, if it evaluates to true, 
  * returns the evaluation value of the then expression.  Otherwise, it returns the evaluation value of the else expression.
