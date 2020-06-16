@@ -53,11 +53,11 @@ extends AbstractExpressionBuilder
 	{
 		ExpressionBuilder result = this;
 		
-		if (getExpression() != null)
+		if (build() != null)
 		{
-			if (getExpression() instanceof AccessorExpression)
+			if (build() instanceof AccessorExpression)
 			{
-				((AccessorExpression) result.getExpression()).attribute(name);
+				((AccessorExpression) result.build()).attribute(name);
 			}
 			else
 			{
@@ -95,7 +95,7 @@ extends AbstractExpressionBuilder
 	
 	public ExpressionBuilder between(Expression low, Expression high)
 	{
-		setExpression(new BetweenPredicate(getExpression(), low, high));
+		setExpression(new BetweenPredicate(build(), low, high));
 		return this;
 	}
 	
@@ -121,7 +121,7 @@ extends AbstractExpressionBuilder
 	
 	public ExpressionBuilder equalTo(Expression value)
 	{
-		setExpression(new EqualityPredicate(getExpression(), value));
+		setExpression(new EqualityPredicate(build(), value));
 		return this;
 	}
 	
@@ -142,7 +142,7 @@ extends AbstractExpressionBuilder
 	
 	public ExpressionBuilder lessThan(Expression value)
 	{
-		setExpression(new LessThanPredicate(getExpression(), value));
+		setExpression(new LessThanPredicate(build(), value));
 		return this;
 	}
 	
@@ -163,7 +163,7 @@ extends AbstractExpressionBuilder
 	
 	public ExpressionBuilder lessThanOrEqual(Expression value)
 	{
-		setExpression(new LessThanOrEqualPredicate(getExpression(), value));
+		setExpression(new LessThanOrEqualPredicate(build(), value));
 		return this;
 	}
 	
@@ -184,7 +184,7 @@ extends AbstractExpressionBuilder
 	
 	public ExpressionBuilder greaterThan(Expression value)
 	{
-		setExpression(new GreaterThanPredicate(getExpression(), value));
+		setExpression(new GreaterThanPredicate(build(), value));
 		return this;
 	}
 	
@@ -205,7 +205,7 @@ extends AbstractExpressionBuilder
 	
 	public ExpressionBuilder greaterThanOrEqual(Expression value)
 	{
-		setExpression(new GreaterThanOrEqualPredicate(getExpression(), value));
+		setExpression(new GreaterThanOrEqualPredicate(build(), value));
 		return this;
 	}
 
@@ -216,19 +216,19 @@ extends AbstractExpressionBuilder
 
 	public ExpressionBuilder isIn(List<?> values)
 	{
-		setExpression(new IsInPredicate(getExpression(), new LiteralExpression(values)));
+		setExpression(new IsInPredicate(build(), new LiteralExpression(values)));
 		return this;
 	}
 	
 	public ExpressionBuilder toUpper(ExpressionBuilder builder)
 	{
-		setExpression(new ToUpperExpression(builder.getExpression()));
+		setExpression(new ToUpperExpression(builder.build()));
 		return this;
 	}
 	
 	public ExpressionBuilder toLower(ExpressionBuilder builder)
 	{
-		setExpression(new ToLowerExpression(builder.getExpression()));
+		setExpression(new ToLowerExpression(builder.build()));
 		return this;
 	}
 
@@ -236,13 +236,13 @@ extends AbstractExpressionBuilder
 
 	public ExpressionBuilder and(ExpressionBuilder subExpressionBuilder)
 	{
-		setExpression(new AndPredicate(getExpression(), subExpressionBuilder.getExpression()));
+		setExpression(new AndPredicate(build(), subExpressionBuilder.build()));
 		return this;
 	}
 
 	public ExpressionBuilder or(ExpressionBuilder subExpressionBuilder)
 	{
-		setExpression(new OrPredicate(getExpression(), subExpressionBuilder.getExpression()));
+		setExpression(new OrPredicate(build(), subExpressionBuilder.build()));
 		return this;
 	}
 }
