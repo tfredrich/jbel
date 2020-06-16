@@ -58,6 +58,7 @@ extends AbstractExpressionBuilder
 	 * @param sortOrder the sort order to use (ASCENDING or DESCENDING)
 	 * @return CollationExpressionBuilder to facilitate chaining (e.g. builder.attribute("x").attribute("y"))
 	 */
+	@SuppressWarnings("unchecked")
 	public CollationExpressionBuilder<T> orderBy(String attributeName, CollationOrder sortOrder)
 	{
 		((CollationExpression<T>) build()).orderBy(attributeName, sortOrder);
@@ -71,6 +72,7 @@ extends AbstractExpressionBuilder
 	 * @param sortOrder the sort order to use (ASCENDING or DESCENDING)
 	 * @return CollationExpressionBuilder to facilitate chaining (e.g. builder.attribute("x").attribute("y"))
 	 */
+	@SuppressWarnings("unchecked")
 	public CollationExpressionBuilder<T> orderBy(AccessorExpression expression, CollationOrder sortOrder)
 	{
 		((CollationExpression<T>) build()).orderBy(expression, sortOrder);

@@ -15,7 +15,7 @@
 */
 package com.strategicgains.jbel.function.math;
 
-import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import com.strategicgains.jbel.exception.FunctionException;
 import com.strategicgains.jbel.function.BinaryFunction;
@@ -27,6 +27,6 @@ public class DivideFunction
 	public Object perform(Object argument1, Object argument2)
 		throws FunctionException
 	{
-		return (getBigDecimalValue(argument1)).divide(getBigDecimalValue(argument2), BigDecimal.ROUND_HALF_UP);
+		return (getBigDecimalValue(argument1)).divide(getBigDecimalValue(argument2), RoundingMode.HALF_UP);
 	}
 }

@@ -66,7 +66,7 @@ implements Expression
 	 */
 	public LiteralExpression(double value)
 	{
-		this(new Double(value));
+		this(Double.valueOf(value));
 	}
 
 	/**

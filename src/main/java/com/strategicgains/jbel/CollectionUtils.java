@@ -15,6 +15,7 @@
 */
 package com.strategicgains.jbel;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,7 +48,23 @@ public abstract class CollectionUtils
 
 		try
 		{
-			result = (Collection<T>) example.getClass().newInstance();
+			result = (Collection<T>) example.getClass().getDeclaredConstructor().newInstance();
+		}
+		catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+		}
+		catch (InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
+		catch (NoSuchMethodException e)
+		{
+			e.printStackTrace();
+		}
+		catch (SecurityException e)
+		{
+			e.printStackTrace();
 		}
 		catch (InstantiationException e)
 		{

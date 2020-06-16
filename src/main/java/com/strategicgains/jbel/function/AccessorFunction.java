@@ -57,7 +57,7 @@ implements UnaryFunction
 	{
 		if (Map.class.isAssignableFrom(argument.getClass()))
 		{
-	    	return ((Map) argument).get(attributeName);		
+	    	return ((Map<?,?>) argument).get(attributeName);		
 		}
 
 		try

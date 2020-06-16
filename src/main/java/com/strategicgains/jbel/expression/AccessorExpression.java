@@ -48,7 +48,7 @@ implements Expression
 	 */
 	public AccessorExpression()
 	{
-		accessorFunctions = new ArrayList<UnaryFunction>();
+		accessorFunctions = new ArrayList<>();
 	}
 
 	/**
