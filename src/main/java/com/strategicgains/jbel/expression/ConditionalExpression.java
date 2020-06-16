@@ -20,12 +20,13 @@ import com.strategicgains.jbel.predicate.Predicate;
 
 
 /**
- * A contional expression is a ternary expression that evaluates the logical expression and, if it evaluates to true, 
- * returns the evaluation value of the true expression.  Otherwise, it returns the evaluation value of the false expression.
+ * An if-then-else expression.
+ * 
+ * A conditional expression is a ternary expression that evaluates the logical (predicate) expression and, if it evaluates to true, 
+ * returns the evaluation value of the then expression.  Otherwise, it returns the evaluation value of the else expression.
  * 
  * @author Todd Fredrich
  * @since Aug 22, 2005
- * @version $Revision: 1.7 $
  */
 public class ConditionalExpression
 implements Expression
@@ -33,26 +34,26 @@ implements Expression
 	/**
 	 * The expression to evaluate that determines which of the other expressions to evaluate.
 	 */
-	private Predicate logicalExpression;
+	private Predicate predicate;
 	
 	/**
-	 * The expression that gets evaluated (and the value returned) if the logigal expression evaluates to true.
+	 * The expression that gets evaluated (and the value returned) if the predicate evaluates to true.
 	 */
-	private Expression trueExpression;
+	private Expression thenExpression;
 	
 	/**
-	 * The expression that gets evaluated (and the value returned) if the logigal expression evaluates to false.
+	 * The expression that gets evaluated (and the value returned) if the predicate evaluates to false.
 	 */
-	private Expression falseExpression;
+	private Expression elseExpression;
 
 	/**
 	 * Construct a new conditional expression instance.
 	 */
-	public ConditionalExpression(Predicate logicalExpression, Expression trueExpression, Expression falseExpression)
+	public ConditionalExpression(Predicate predicate, Expression thenExpression, Expression elseExpression)
 	{
-		this.logicalExpression = logicalExpression;
-		this.trueExpression = trueExpression;
-		this.falseExpression = falseExpression;
+		this.predicate = predicate;
+		this.thenExpression = thenExpression;
+		this.elseExpression = elseExpression;
 	}
 
 	/**
@@ -60,9 +61,9 @@ implements Expression
 	 * 
 	 * @return the false expression.
 	 */
-	public Expression getFalseExpression()
+	public Expression getElseExpression()
 	{
-		return falseExpression;
+		return elseExpression;
 	}
 
 	/**
@@ -70,9 +71,9 @@ implements Expression
 	 * 
 	 * @return the logical expression.
 	 */
-	public Expression getLogicalExpression()
+	public Predicate getPredicate()
 	{
-		return logicalExpression;
+		return predicate;
 	}
 
 	/**
@@ -80,9 +81,9 @@ implements Expression
 	 * 
 	 * @return the true expression.
 	 */
-	public Expression getTrueExpression()
+	public Expression getThenExpression()
 	{
-		return trueExpression;
+		return thenExpression;
 	}
 
 	/**
@@ -94,13 +95,13 @@ implements Expression
 	public Object evaluate(Object argument)
 		throws EvaluationException
 	{
-		if (logicalExpression.test(argument))
+		if (predicate.test(argument))
 		{
-			return trueExpression.evaluate(argument);
+			return thenExpression.evaluate(argument);
 		}
 		else
 		{
-			return falseExpression.evaluate(argument);
+			return elseExpression.evaluate(argument);
 		}
 	}
 
