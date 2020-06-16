@@ -16,12 +16,13 @@
 package com.strategicgains.jbel.benchmarks;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
 
 import com.strategicgains.jbel.CollectionUtils;
+import com.strategicgains.jbel.builder.SelectExpressionBuilder;
 import com.strategicgains.jbel.domain.TestObject;
 import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.AccessorExpression;
@@ -30,6 +31,7 @@ import com.strategicgains.jbel.predicate.AbstractPredicate;
 import com.strategicgains.jbel.predicate.AndPredicate;
 import com.strategicgains.jbel.predicate.EqualityPredicate;
 import com.strategicgains.jbel.predicate.GreaterThanPredicate;
+import com.strategicgains.jbel.predicate.LiteralPredicate;
 import com.strategicgains.jbel.predicate.Predicate;
 
 public class SelectBenchmarkTestCase
@@ -46,15 +48,32 @@ public class SelectBenchmarkTestCase
 		toFilter = TestObject.createObjectList(LIST_SIZE);
 	}
 
+	public void testSelectWithSelectExpresionBuilder()
+	throws EvaluationException
+	{
+		if (SHOULD_BENCHMARK)
+		{
+			SelectExpressionBuilder select = new SelectExpressionBuilder();
+			Predicate predicate = (Predicate) select.field("name").equalTo("zero").and(select.field("intValue").greaterThan(900)).build();
+			List<TestObject> selected = null;
+			long before = System.currentTimeMillis();
+
+			for (int i = 0; i < REPEAT_COUNT; ++i)
+			{
+				selected = (List<TestObject>) CollectionUtils.select(toFilter, predicate);
+			}
+	
+			long after = System.currentTimeMillis();
+			System.out.println("Select (JBEL Builder):\t\t " + (after - before) + "ms");
+			verifyListResults(selected);
+		}
+	}
+
 	public void testSelectWithJbelExpression()
 	throws EvaluationException
 	{
 		if (SHOULD_BENCHMARK)
 		{
-			Date before = new Date();
-	//		SelectExpressionBuilder select = new SelectExpressionBuilder();
-	//		select.attribute("name").equalTo("zero").and(select.attribute("intValue").greaterThan(900));
-
 			Predicate predicate = (Predicate) new AndPredicate(
 				new EqualityPredicate(new AccessorExpression("name"),
 					new LiteralExpression("zero")),
@@ -62,14 +81,15 @@ public class SelectBenchmarkTestCase
 					new LiteralExpression(900)));
 
 			List<TestObject> selected = null;
+			long before = System.currentTimeMillis();
 
 			for (int i = 0; i < REPEAT_COUNT; ++i)
 			{
 				selected = (List<TestObject>) CollectionUtils.select(toFilter, predicate);
 			}
 	
-			Date after = new Date();
-			System.out.println("Select (JBEL Expression):\t " + computeTime(before, after) + "ms");
+			long after = System.currentTimeMillis();
+			System.out.println("Select (JBEL Expression):\t " + (after - before) + "ms");
 			verifyListResults(selected);
 		}
 	}
@@ -78,7 +98,7 @@ public class SelectBenchmarkTestCase
 	{
 		if (SHOULD_BENCHMARK)
 		{
-			Date before = new Date();
+			long before = System.currentTimeMillis();
 			List<TestObject> selected = null;
 
 			for (int i = 0; i < REPEAT_COUNT; ++i)
@@ -86,8 +106,8 @@ public class SelectBenchmarkTestCase
 				selected = selectCollectionItems(toFilter);
 			}
 
-			Date after = new Date();
-			System.out.println("Select (Java Iterator):\t\t " + computeTime(before, after) + "ms");
+			long after = System.currentTimeMillis();
+			System.out.println("Select (Java Iterator):\t\t " + (after - before) + "ms");
 			verifyListResults(selected);
 		}
 	}
@@ -97,9 +117,8 @@ public class SelectBenchmarkTestCase
 	{
 		if (SHOULD_BENCHMARK)
 		{
-			Date before = new Date();
+			long before = System.currentTimeMillis();
 			List<TestObject> selected = null;
-			
 			Predicate callbackPredicate = newCallbackPredicate();
 
 			for (int i = 0; i < REPEAT_COUNT; ++i)
@@ -107,8 +126,8 @@ public class SelectBenchmarkTestCase
 				selected = (List<TestObject>) CollectionUtils.select(toFilter, callbackPredicate);
 			}
 
-			Date after = new Date();
-			System.out.println("Select (JBEL Callback):\t\t " + computeTime(before, after) + "ms");
+			long after = System.currentTimeMillis();
+			System.out.println("Select (JBEL Callback):\t\t " + (after - before) + "ms");
 			verifyListResults(selected);
 		}
 	}
@@ -158,22 +177,16 @@ public class SelectBenchmarkTestCase
 		{
 			public boolean test(Object object)
 			{
-				boolean result = false;
 				TestObject to = (TestObject) object;
 				
 				if (to.getName().equals("zero")
 					&& to.getIntValue() > 900)
 				{
-					result = true;
+					return true;
 				}
-				
-				return result;
+
+				return false;
 			}
 		};
-	}
-	
-	private long computeTime(Date begin, Date end)
-	{
-		return (end.getTime() - begin.getTime());
 	}
 }

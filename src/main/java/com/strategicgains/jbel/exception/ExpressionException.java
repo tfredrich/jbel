@@ -1,5 +1,5 @@
 /*
-	Copyright 2005 Strategic Gains, Inc.
+    Copyright 2012, Strategic Gains, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -16,34 +16,40 @@
 package com.strategicgains.jbel.exception;
 
 /**
- * EvaluationException is thrown when an expression fails to evaluate for one reason or another.
- * 
- * @author Todd Fredrich
- * @since Aug 22, 2005
- * @version $Revision: 1.1 $
+ * @author toddf
+ * @since Dec 18, 2012
  */
-public class EvaluationException
-extends ExpressionException
+public class ExpressionException
+extends RuntimeException
 {
-	private static final long serialVersionUID = -2846961186226290514L;
+    private static final long serialVersionUID = 2128172780066214958L;
 
-	public EvaluationException() 
+	public ExpressionException()
 	{
-		super();
 	}
 
-	public EvaluationException(String message, Throwable rootCause) 
-	{
-		super(message, rootCause);
-	}
-
-	public EvaluationException(String message)
+	/**
+	 * @param message
+	 */
+	public ExpressionException(String message)
 	{
 		super(message);
 	}
 
-	public EvaluationException(Throwable rootCause)
+	/**
+	 * @param throwable
+	 */
+	public ExpressionException(Throwable throwable)
 	{
-		super(rootCause);
-	}	
+		super(throwable);
+	}
+
+	/**
+	 * @param message
+	 * @param throwable
+	 */
+	public ExpressionException(String message, Throwable throwable)
+	{
+		super(message, throwable);
+	}
 }

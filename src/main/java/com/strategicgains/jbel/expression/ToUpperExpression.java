@@ -21,7 +21,7 @@ import com.strategicgains.jbel.function.ToUpperFunction;
 public class ToUpperExpression
 extends UnaryExpression
 {
-	private ToUpperFunction function = new ToUpperFunction();
+	private static final ToUpperFunction FUNCTION = new ToUpperFunction();
 
 	public ToUpperExpression(Expression expression)
 	{
@@ -31,6 +31,6 @@ extends UnaryExpression
 	protected Object evaluateResults(Object argument)
 		throws EvaluationException
 	{
-		return function.perform(argument);
+		return FUNCTION.perform(argument);
 	}
 }

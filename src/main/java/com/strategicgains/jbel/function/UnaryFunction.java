@@ -35,6 +35,5 @@ public interface UnaryFunction
 	 * @return an object representing the result of the function perform for the given argument.
 	 * @throws FunctionException if the function could not be performed.
 	 */
-	public Object perform(Object argument)
-	throws FunctionException;
+	public Object perform(Object argument);
 }

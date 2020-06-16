@@ -27,7 +27,7 @@ import com.strategicgains.jbel.expression.Expression;
  * @since Jan 26, 2006
  */
 public class BetweenPredicate
-	extends UnaryPredicate
+extends UnaryPredicate
 {
 	public BetweenPredicate(Expression accessor, Expression lowerBound, Expression upperBound)
 	{

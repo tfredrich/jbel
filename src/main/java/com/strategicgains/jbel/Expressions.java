@@ -22,15 +22,11 @@ import com.strategicgains.jbel.predicate.Predicate;
 
 public final class Expressions
 {
-	// CONSTANTS
-
 	public static final Expression NULL = new LiteralExpression(null);
 	public static final Expression ZERO = new LiteralExpression(0);
 	public static final Predicate TRUE = new LiteralPredicate(true);
 	public static final Predicate FALSE = new LiteralPredicate(false);
-	
-	// CONSTRUCTOR
-	
+
 	private Expressions()
 	{
 		// do nothing--this class is non-instantiable.

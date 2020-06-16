@@ -15,7 +15,7 @@
 */
 package com.strategicgains.jbel.expression;
 
-import com.strategicgains.jbel.exception.EvaluationException;
+
 
 /**
  * LiteralExpression represents a literal or constant value as an expression. Internally, the literal value
@@ -24,11 +24,16 @@ import com.strategicgains.jbel.exception.EvaluationException;
  * 
  * @author Todd Fredrich
  * @since Aug 22, 2005
- * @version $Revision: 1.4 $
  */
 public class LiteralExpression
 implements Expression
 {
+	// CONSTANTS
+
+	public static final Expression NULL = new LiteralExpression(null);
+	public static final Expression ZERO = new LiteralExpression(0);
+
+
 	/**
 	 * The internal value of this literal expression.
 	 */
@@ -77,8 +82,8 @@ implements Expression
 	/**
 	 * Simply returns the value of the literal as an Object.
 	 */
+	@Override
 	public Object evaluate(Object argument)
-	throws EvaluationException
 	{
 		return literal;
 	}

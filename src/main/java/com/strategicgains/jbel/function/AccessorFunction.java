@@ -16,6 +16,7 @@
 package com.strategicgains.jbel.function;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.exception.FunctionException;
@@ -32,6 +33,7 @@ implements UnaryFunction
 	 * The name of an object attribute from which a value will be retrieved.
 	 */
 	private String attributeName;
+	private Field field = null;
 	
 	/**
 	 * Construct an accessor function for a given field name.
@@ -40,7 +42,7 @@ implements UnaryFunction
 	 */
 	public AccessorFunction(String name)
 	{
-		attributeName = name;
+		this.attributeName = name;
 	}
 
 	/**
@@ -51,22 +53,26 @@ implements UnaryFunction
 	 * @see com.strategicgains.jbel.function.UnaryFunction#perform(java.lang.Object)
 	 */
 	public Object perform(Object argument)
-		throws FunctionException
+	throws FunctionException
 	{
-		Object result = null;
+		if (Map.class.isAssignableFrom(argument.getClass()))
+		{
+	    	return ((Map) argument).get(attributeName);		
+		}
 
 		try
-		{
-			Field field = argument.getClass().getDeclaredField(attributeName);
-			field.setAccessible(true);
-			result = field.get(argument);
-			
-		}
-		catch (Exception e)
-		{
-			throw new FunctionException(e);
-		}
-		
-		return result;
+        {
+			if (field == null)
+			{
+		    	field = argument.getClass().getDeclaredField(attributeName);
+		    	field.setAccessible(true);
+			}
+
+			return field.get(argument);
+        }
+        catch (Exception e)
+        {
+        	throw new EvaluationException(attributeName, e);
+        }
 	}
 }

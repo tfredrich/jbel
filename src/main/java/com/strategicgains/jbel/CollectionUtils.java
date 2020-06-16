@@ -18,8 +18,6 @@ package com.strategicgains.jbel;
 import java.util.Collection;
 import java.util.List;
 
-import com.strategicgains.jbel.builder.CollationExpressionBuilder;
-import com.strategicgains.jbel.builder.SelectExpressionBuilder;
 import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.exception.FunctionException;
 import com.strategicgains.jbel.expression.CollationExpression;
@@ -36,29 +34,20 @@ public abstract class CollectionUtils
 {
 	//SECTION: FACTORIES - CONVENIENCE
 	
-	public static SelectExpressionBuilder newSelectExpressionBuilder()
-	{
-		return new SelectExpressionBuilder();
-	}
-	
-	public static CollationExpressionBuilder newCollationExpressionBuilder()
-	{
-		return new CollationExpressionBuilder();
-	}
-	
 	/**
 	 * Constructs a new, empty Collection with identical type of the passed-in collection.
 	 *  
-	 * @param collection an example Collection.
+	 * @param example an example Collection.
 	 * @return A new, empty Collection of the same type as collection.
 	 */
-	public static <T> Collection<T> newCollectionOfType(Collection<T> collection)
+	@SuppressWarnings("unchecked")
+    public static <T> Collection<T> newCollectionOfType(Collection<T> example)
 	{
 		Collection<T> result = null;
 
 		try
 		{
-			result = (Collection<T>) collection.getClass().newInstance();
+			result = (Collection<T>) example.getClass().newInstance();
 		}
 		catch (InstantiationException e)
 		{
@@ -80,18 +69,17 @@ public abstract class CollectionUtils
 	 * objects in the passed-in collection, calling the operation for 
 	 * each of the individual elements in the original collection to
 	 * construct the resulting collection. The resulting collection will
-	 * have the same size, but each element in the collection may (most likely)
-	 * have a different footprint.
+	 * have the same number of elements, but each element in the collection
+	 * may (most likely) have a different footprint.
 	 * 
 	 * @param collection the collection from which to derive information.
-	 * @param function the operation to perform on each element in the passed-in collection.
+	 * @param unaryFunction the operation to perform on each element in the passed-in collection.
 	 * @return a collection containing the results of the operation on each element.
 	 * @throws EvaluationException 
 	 */
-	public static <T> Collection<T> collect(Collection<T> collection, UnaryFunction function)
-	throws EvaluationException
+	public static <T> Collection<T> collect(Collection<T> collection, UnaryFunction unaryFunction)
 	{
-		CollectFunction<T> collectFunction = new CollectFunction<T>(function, newCollectionOfType(collection));
+		CollectFunction<T> collectFunction = new CollectFunction<T>(unaryFunction, newCollectionOfType(collection));
 		doForEach(collection, collectFunction);
 		return collectFunction.getResults();
 	}
@@ -105,7 +93,6 @@ public abstract class CollectionUtils
 	 * @throws EvaluationException 
 	 */
 	public static <T> T detect(Collection<T> collection, Predicate predicate)
-	throws EvaluationException
 	{
 		for (T element : collection)
 		{
@@ -119,30 +106,30 @@ public abstract class CollectionUtils
 	}
 
 	/**
-	 * For each element in the collection perform the given operation.
+	 * For each element in the collection perform the given UnaryFunction.
 	 * 
 	 * @param collection the collection containing elements on to perform the operation.
-	 * @param function the operation to perform on each element in the collection.
+	 * @param unaryFunction the operation to perform on each element in the collection.
 	 * @throws EvaluationException 
 	 */
-	public static <T> void doForEach(Collection<T> collection, UnaryFunction function)
-	throws EvaluationException
+	public static <T> void doForEach(Collection<T> collection, UnaryFunction unaryFunction)
 	{
 		for (T element : collection)
 		{
-			function.perform(element);
+			unaryFunction.perform(element);
 		}
 	}
 
 	/**
 	 * Derive a sub-set of the collection where the predicate returns false for each of the elements in the new collection.
+	 * In other words, this operation rejects (does not include) the items where the predicate returns true in the
+	 * resulting collection.
 	 * 
 	 * @param collection a collection from which to derive a sub-set.
 	 * @param predicate the predicate that returns false for selected elements.
 	 * @return a sub-set of the passed-in collection.
 	 */
 	public static <T> Collection<T> reject(Collection<T> collection, Predicate predicate)
-	throws EvaluationException
 	{
 		RejectFunction<T> rejectFunction = new RejectFunction<T>(predicate, newCollectionOfType(collection));
 		doForEach(collection, rejectFunction);
@@ -157,7 +144,6 @@ public abstract class CollectionUtils
 	 * @return a sub-set of the passed-in collection.
 	 */
 	public static <T> Collection<T> select(Collection<T> collection, Predicate predicate)
-	throws EvaluationException
 	{
 		SelectFunction<T> selectFunction = new SelectFunction<T>(predicate, newCollectionOfType(collection));
 		doForEach(collection, selectFunction);
@@ -169,23 +155,50 @@ public abstract class CollectionUtils
 	 * list where the expression evaluates to true, that object will be in the resulting list.
 	 * 
 	 * @param objects a list of objects.
-	 * @param expression a predicate expression that returns true of false.
+	 * @param predicate a predicate expression that returns true of false.
 	 * @param collationExpression an expression to sort the resulting list.
 	 * @return an ordered sub-set of the objects list.
 	 * @throws EvaluationException if the expression cannot be evaluated.
 	 */
-	public static <T> List<T> select(List<T> objects, Predicate expression, CollationExpression<T> collationExpression)
-	throws EvaluationException
+	public static <T> List<T> select(List<T> objects, Predicate predicate, CollationExpression<T> collationExpression)
 	{
-		List<T> selected = (List<T>) select(objects, expression);
-		java.util.Collections.sort(selected, collationExpression);
-		
+		List<T> selected = (List<T>) select(objects, predicate);
+		sortInPlace(selected, collationExpression);
 		return selected;
 	}
-	
-	
+
+	/**
+	 * Sort (order) the elements in the list using the collationExpression.  This method has the side-effect
+	 * of modifying the list that is passed-in, instead of returning a copy.
+	 *  
+	 * @param objects a list of objects (will be modified).
+	 * @param collationExpression an expression to use in sorting the list.
+	 * @return none. The passed-in List is modified.
+	 */
+	public static <T> void sortInPlace(List<T> objects, CollationExpression<T> collationExpression)
+	{
+		java.util.Collections.sort(objects, collationExpression);
+	}
+
+	/**
+	 * Sort (order) the elements in the list using the collationExpression, returning a sorted copy of
+	 * the original list.  This method does not modify the original, passed-in list.
+	 *  
+	 * @param objects a list of objects.
+	 * @param collationExpression an expression to use in sorting the list.
+	 * @return a newly-sorted list.
+	 */
+	public static <T> List<T> sort(List<T> objects, CollationExpression<T> collationExpression)
+	{
+		List<T> sorted = (List<T>) newCollectionOfType(objects);
+		sorted.addAll(objects);
+		sortInPlace(sorted, collationExpression);
+		return sorted;
+	}
+
+
 	// SECTION: INNER CLASSES
-	
+
 	private static class CollectFunction<T>
 	implements UnaryFunction
 	{
@@ -198,8 +211,9 @@ public abstract class CollectionUtils
 			this.results = resulting;
 		}
 		
-		public Object perform(Object argument)
-			throws FunctionException
+		@SuppressWarnings("unchecked")
+		@Override
+        public Object perform(Object argument)
 		{
 			results.add((T) subFunction.perform(argument));
 			return null;
@@ -223,8 +237,9 @@ public abstract class CollectionUtils
 			results = resultingCollection;
 		}
 		
-		public Object perform(Object argument)
-		throws FunctionException
+		@SuppressWarnings("unchecked")
+		@Override
+        public Object perform(Object argument)
 		{
 			if (isSelected(argument))
 			{
@@ -235,7 +250,6 @@ public abstract class CollectionUtils
 		}
 
 		protected boolean isSelected(Object argument)
-		throws FunctionException
 		{
 			try
 			{
@@ -261,8 +275,8 @@ public abstract class CollectionUtils
 			super(predicate, resultingCollection);
 		}
 
+		@Override
 		protected boolean isSelected(Object argument)
-		throws FunctionException
 		{
 			return (!super.isSelected(argument));
 		}

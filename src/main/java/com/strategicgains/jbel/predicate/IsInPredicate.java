@@ -20,14 +20,15 @@ import java.util.Collection;
 import com.strategicgains.jbel.expression.Expression;
 
 public class IsInPredicate
-	extends AbstractBinaryPredicate
+extends PredicateExpression
 {
 	public IsInPredicate(Expression leftExpression, Expression rightExpression)
 	{
 		super(leftExpression, rightExpression);
 	}
 
-	public Object evaluateResults(Object object1, Object object2)
+	@SuppressWarnings("rawtypes")
+    public Object evaluateResults(Object object1, Object object2)
 	{
 		return Boolean.valueOf(((Collection)object2).contains(object1));
 	}

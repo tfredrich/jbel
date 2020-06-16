@@ -29,17 +29,17 @@ import com.strategicgains.jbel.predicate.Predicate;
 public class ExpressionBuilderTestCase
 	extends TestCase
 {
-	private ExpressionBuilder expression;
-	private CollationExpressionBuilder<TestObject> orderBy;
-	private List<TestObject> objects;
+	private SelectExpressionBuilder expression;
+	private CollationExpressionBuilder orderBy;
+	private List objects;
 	private TestObject parent1;
 	private TestObject parent2;
-	private List<TestObject> parents;
+	private List parents;
 	
 	public void setUp()
 	{
-		expression = new ExpressionBuilder();
-		orderBy = new CollationExpressionBuilder<TestObject>();
+		expression = new SelectExpressionBuilder();
+		orderBy = new CollationExpressionBuilder();
 		objects = buildObjectsList();
 		setupParents();
 	}
@@ -48,7 +48,7 @@ public class ExpressionBuilderTestCase
 	{
 		assignParent1();
 		assignParent2();
-		parents = new ArrayList<TestObject>(2);
+		parents = new ArrayList(2);
 		parents.add(parent1);
 		parents.add(parent2);
 	}
@@ -80,7 +80,7 @@ public class ExpressionBuilderTestCase
 	throws Exception
 	{
 		expression.field("intValue").equalTo(5);
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 	}
 
@@ -99,7 +99,7 @@ public class ExpressionBuilderTestCase
 		};
 		
 		expression.field("intValue").isIn(values);
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List result = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(4, result.size());
 	}
 
@@ -110,9 +110,9 @@ public class ExpressionBuilderTestCase
 	throws Exception
 	{
 		
-		List<TestObject> values = (List<TestObject>) new AccessorExpression("intValue").evaluate(objects);
+		List values = (List) new AccessorExpression("intValue").evaluate(objects);
 		expression.field("intValue").isIn(values);
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List result = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(13, result.size());
 	}
 
@@ -120,7 +120,7 @@ public class ExpressionBuilderTestCase
 	throws Exception
 	{
 		expression.toUpper(expression.field("name")).equalTo("FIVE");
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List result = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(1, result.size());
 		assertEquals(5, ((TestObject)result.get(0)).getIntValue());
 	}
@@ -129,7 +129,7 @@ public class ExpressionBuilderTestCase
 	throws Exception
 	{
 		expression.toLower(expression.field("name")).equalTo("eight");
-		List<TestObject> result = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List result = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(1, result.size());
 		assertEquals(8, ((TestObject)result.get(0)).getIntValue());
 	}
@@ -150,7 +150,7 @@ public class ExpressionBuilderTestCase
 		
 		expression.field("intValue").isIn(values);
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build(), (CollationExpression) orderBy.build());
 		assertEquals(4, results.size());
 		assertEquals(1, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(3, ((TestObject)results.get(1)).getIntValue());
@@ -167,7 +167,7 @@ public class ExpressionBuilderTestCase
 		expression.field("name").equalTo("five")
 			.and(expression.field("stringValue").equalTo("5"))
 			.and(expression.field("intValue").equalTo(5));
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(1, results.size());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 	}
@@ -181,7 +181,7 @@ public class ExpressionBuilderTestCase
 		expression.field("stringValue").equalTo("3")
 			.and(expression.field("intValue").equalTo(5))
 			.and(expression.field("name").equalTo("five"));
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(0, results.size());
 	}
 
@@ -195,7 +195,7 @@ public class ExpressionBuilderTestCase
 			.or(expression.field("name").equalTo("nine"))
 			.or(expression.field("stringValue").equalTo("3"));
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build(), (CollationExpression) orderBy.build());
 		assertEquals(3, results.size());
 		assertEquals(3, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(5, ((TestObject)results.get(1)).getIntValue());
@@ -212,7 +212,7 @@ public class ExpressionBuilderTestCase
 				.and(expression.field("stringValue").equalTo("9"))
 				.and(expression.field("intValue").equalTo(9)));
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build(), (CollationExpression) orderBy.build());
 		assertEquals(2, results.size());
 		assertEquals(5, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(9, ((TestObject)results.get(1)).getIntValue());
@@ -222,7 +222,7 @@ public class ExpressionBuilderTestCase
 	throws Exception
 	{
 		expression.field("parent").field("intValue").equalTo(99);
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build());
 		assertEquals(7, results.size());
 	}
 
@@ -232,10 +232,10 @@ public class ExpressionBuilderTestCase
 		expression.field("intValue").equalTo(5)
 			.or(expression.field("name").equalTo("nine"))
 			.or(expression.field("stringValue").equalTo("3"));
-		expression.getExpression();
-		expression.getExpression();
+		expression.build();
+		expression.build();
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build(), (CollationExpression) orderBy.build());
 		assertEquals(3, results.size());
 		assertEquals(3, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(5, ((TestObject)results.get(1)).getIntValue());
@@ -247,16 +247,16 @@ public class ExpressionBuilderTestCase
 	{
 		expression.field("intValue").between(3, 5);
 		orderBy.orderBy("intValue");
-		List<TestObject> results = (List<TestObject>) CollectionUtils.select(objects, (Predicate) expression.getExpression(), (CollationExpression) orderBy.getExpression());
+		List results = (List) CollectionUtils.select(objects, (Predicate) expression.build(), (CollationExpression) orderBy.build());
 		assertEquals(3, results.size());
 		assertEquals(3, ((TestObject)results.get(0)).getIntValue());
 		assertEquals(4, ((TestObject)results.get(1)).getIntValue());
 		assertEquals(5, ((TestObject)results.get(2)).getIntValue());
 	}
 
-	private List<TestObject> buildObjectsList()
+	private List buildObjectsList()
 	{
-		List<TestObject> results = new ArrayList<TestObject>(13);
+		List results = new ArrayList(13);
 		results.add(new TestObject("ten", 10, "10"));
 		results.add(new TestObject("nine2", 9, "9"));
 		results.add(new TestObject("seven", 7, "7"));

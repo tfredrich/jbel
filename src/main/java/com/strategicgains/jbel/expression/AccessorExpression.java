@@ -16,33 +16,39 @@
 package com.strategicgains.jbel.expression;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.function.AccessorFunction;
+import com.strategicgains.jbel.function.ElementAccessorFunction;
+import com.strategicgains.jbel.function.UnaryFunction;
 
 /**
  * An expression that retrieves a value from an object graph.
  * 
  * @author Todd Fredrich
  * @since Aug 26, 2005
- * @version $Revision: 1.7 $
  */
 public class AccessorExpression
 implements Expression
 {
+	private static final String ARRAY_INDEX_REGEX = "(\\w*)\\[(\\d)\\]";
+	private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile(ARRAY_INDEX_REGEX);
+
 	/**
-	 * A list of AccessorFunction instances that retrieve the field values from an object.
+	 * A list of UnaryFunction instances that retrieve the field values from an object.
 	 */
-	private List<AccessorFunction> accessorFunctions;
+	private List<UnaryFunction> accessorFunctions;
+	private String name;
 	
 	/**
 	 * Construct a new empty AccessorExpression instance.
 	 */
 	public AccessorExpression()
 	{
-		accessorFunctions = new ArrayList<AccessorFunction>();
+		accessorFunctions = new ArrayList<UnaryFunction>();
 	}
 
 	/**
@@ -64,7 +70,31 @@ implements Expression
 	 */
 	public AccessorExpression attribute(String attributeName)
 	{
-		accessorFunctions.add(new AccessorFunction(attributeName));
+		if (attributeName == null || attributeName.trim().isEmpty())
+		{
+			throw new NullPointerException("Empty/Null attribute select string");
+		}
+
+		this.name = attributeName;
+		String[] segments = attributeName.split("\\.");
+
+		for (String segment : segments)
+		{
+			Matcher m = ARRAY_INDEX_PATTERN.matcher(segment);
+
+			if (m.matches())
+			{
+				String name = m.group(1);
+				int index = Integer.parseInt(m.group(2));
+				accessorFunctions.add(new AccessorFunction(name));
+				addIndex(index);
+			}
+			else
+			{
+				accessorFunctions.add(new AccessorFunction(segment));
+			}
+		}
+
 		return this;
 	}
 
@@ -80,12 +110,10 @@ implements Expression
 	throws EvaluationException
 	{
 		List<Object> results = new ArrayList<Object>();
-		Iterator<?> iterator = argument.iterator();
 		
-		while (iterator.hasNext())
+		for (Object element : argument)
 		{
-			Object result = evaluate(iterator.next());
-			results.add(result);
+			results.add(evaluate(element));
 		}
 
 		return results;
@@ -101,15 +129,24 @@ implements Expression
 	public Object evaluate(Object argument)
 	throws EvaluationException
 	{
-		Iterator<?> iterator = accessorFunctions.iterator();
 		Object attribute = argument;
 		
-		while (iterator.hasNext())
+		for(UnaryFunction accessor : accessorFunctions)
 		{
-			AccessorFunction accessor = (AccessorFunction) iterator.next();
 			attribute = accessor.perform(attribute);
 		}
 		
 		return attribute;
+	}
+	
+	public String getAttributeName()
+	{
+		return name;
+	}
+	
+	public AccessorExpression addIndex(int index)
+	{
+		accessorFunctions.add(new ElementAccessorFunction(index));
+		return this;
 	}
 }

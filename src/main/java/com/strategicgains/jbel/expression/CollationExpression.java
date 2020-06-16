@@ -144,7 +144,8 @@ implements Expression, Comparator<T>, Serializable
 	 * @return the ordered collection.
 	 * @throws EvaluationException if the argument is not a List or Collection.
 	 */
-	public Object evaluate(Object argument)
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Object evaluate(Object argument)
 	throws EvaluationException
 	{
 		Object results = argument;

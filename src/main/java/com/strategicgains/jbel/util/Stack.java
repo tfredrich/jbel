@@ -1,5 +1,5 @@
 /*
-	Copyright 2006 Strategic Gains, Inc.
+    Copyright 2012, Strategic Gains, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -13,20 +13,21 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package com.strategicgains.jbel.predicate;
+package com.strategicgains.jbel.util;
 
+import java.util.Iterator;
 
 /**
- * Implements Predicate, overriding the evaluate method of Expression to call
- * Predicate.test().
- * 
- * @author Todd Fredrich
+ * @author toddf
+ * @since Dec 18, 2012
  */
-public abstract class AbstractPredicate
-implements Predicate
+public interface Stack<T>
 {
-	public Object evaluate(Object object)
-	{
-		return Boolean.valueOf(test(object));
-	}
+	T push(T object);
+	T pop();
+	T peek();
+	int size();
+	boolean isEmpty();
+	void clear();
+	Iterator<T> iterator();
 }

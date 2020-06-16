@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.predicate;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.Expression;
 
 public abstract class AbstractBinaryPredicate
@@ -26,8 +25,8 @@ extends BinaryPredicate
 		super(leftExpression, rightExpression);
 	}
 
-	public int compare(Object object1, Object object2)
-	throws EvaluationException 
+	@SuppressWarnings({"unchecked", "rawtypes"})
+    public int compare(Object object1, Object object2)
 	{
 		int result = 0;
 

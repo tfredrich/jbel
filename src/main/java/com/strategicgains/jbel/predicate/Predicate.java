@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.predicate;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 import com.strategicgains.jbel.expression.Expression;
 
 /**
@@ -23,11 +22,9 @@ import com.strategicgains.jbel.expression.Expression;
  * 
  * @author Todd Fredrich
  * @since Jan 26, 2006
- * @version $Revision$
  */
 public interface Predicate
 extends Expression
 {
-	public boolean test(Object argument)
-	throws EvaluationException;
+	public boolean test(Object argument);
 }

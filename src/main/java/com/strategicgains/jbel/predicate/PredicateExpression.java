@@ -17,20 +17,34 @@ package com.strategicgains.jbel.predicate;
 
 import com.strategicgains.jbel.expression.Expression;
 
-/**
- * 
- * @author toddf
- */
-public class AndPredicate
+public abstract class PredicateExpression
 extends BinaryPredicate
 {
-	public AndPredicate(Expression leftExpression, Expression rightExpression)
+	public PredicateExpression(Expression leftExpression, Expression rightExpression)
 	{
 		super(leftExpression, rightExpression);
 	}
 
-	protected Object evaluateResults(Object value1, Object value2)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+    public int compare(Object object1, Object object2)
 	{
-		return Boolean.valueOf(((Boolean)value1).booleanValue() && ((Boolean)value2).booleanValue());
+		int result = 0;
+
+		if (object1 == null || object2 == null)
+		{
+			if (object1 == null && object2 == null) result = 0;
+			else if (object1 == null) result = -1;
+			else result = 1;
+		}
+		else if (object1 instanceof Comparable && object2 instanceof Comparable)
+		{
+			result = ((Comparable)object1).compareTo(object2);
+		}
+		else
+		{
+			result = object1.toString().compareTo(object2.toString());
+		}
+
+		return result;
 	}
 }

@@ -15,7 +15,6 @@
 */
 package com.strategicgains.jbel.predicate;
 
-import com.strategicgains.jbel.exception.EvaluationException;
 
 /**
  * LiteralPredicate represents a literal or constant value as an expression that returns only true or false.  The 
@@ -28,6 +27,11 @@ import com.strategicgains.jbel.exception.EvaluationException;
 public class LiteralPredicate
 implements Predicate
 {
+	// SECTION: CONSTANTS
+
+	public static final Predicate TRUE = new LiteralPredicate(true);
+	public static final Predicate FALSE = new LiteralPredicate(false);
+
 	/**
 	 * The internal value of this literal expression.
 	 */
@@ -56,14 +60,14 @@ implements Predicate
 	/**
 	 * Simply returns the value of the literal as an Object.
 	 */
+	@Override
 	public Object evaluate(Object argument)
-		throws EvaluationException
 	{
 		return (predicate ? Boolean.TRUE : Boolean.FALSE);
 	}
 
+	@Override
 	public boolean test(Object object)
-		throws EvaluationException
 	{
 		return predicate;
 	}

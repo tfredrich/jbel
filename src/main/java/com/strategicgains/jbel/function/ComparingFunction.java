@@ -57,7 +57,8 @@ implements BinaryFunction
 	 * @throws EvaluationException if the accessor expression cannot be evaluated.
 	 * @see com.strategicgains.jbel.function.BinaryFunction#perform(java.lang.Object, java.lang.Object)
 	 */
-	public Object perform(Object argument1, Object argument2)
+	@SuppressWarnings({"rawtypes", "unchecked"})
+    public Object perform(Object argument1, Object argument2)
 	throws FunctionException
 	{
 		int result = 0;
@@ -78,7 +79,7 @@ implements BinaryFunction
 		}
 		else
 		{
-			result = String.valueOf(attribute1).compareTo(attribute2.toString());
+			result = String.valueOf(attribute1).compareTo(String.valueOf(attribute2));
 		}
 	
 		return Integer.valueOf(sortOrder.collateResult(result));

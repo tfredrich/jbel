@@ -100,7 +100,7 @@ public class CollationExpressionTestCase
 		builder.orderBy("intValue")
 			.orderBy("stringValue", CollationOrder.DESCENDING)
 			.orderBy("name", CollationOrder.ASCENDING);
-		builder.evaluate(objects);
+		builder.build().evaluate(objects);
 		String[] expected = {"one", "two", "three", "four", "five", "six", "six2", "seven", "eight", "nine", "ten", "ten2"};
 		
 		for (int i = 0; i < objects.size(); ++i)
