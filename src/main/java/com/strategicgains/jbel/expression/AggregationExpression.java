@@ -30,7 +30,7 @@ import java.util.Map;
 public class AggregationExpression
 implements Expression
 {
-	private List<AccessorExpression> accessors = new ArrayList<AccessorExpression>();
+	private List<AccessorExpression> accessors = new ArrayList<>();
 
 	public AggregationExpression(String... fields)
     {
@@ -61,7 +61,7 @@ implements Expression
 
 	private Object evaluateOverCollection(Collection<?> collection)
     {
-		List<Object> results = new ArrayList<Object>();
+		List<Object> results = new ArrayList<>();
 		
 		for (Object element : collection)
 		{
@@ -73,7 +73,7 @@ implements Expression
 
 	private Object evaluateOverObject(Object argument)
     {
-		Map<String, Object> results = new HashMap<String, Object>();
+		Map<String, Object> results = new HashMap<>();
 
 		for (AccessorExpression accessor : accessors)
 		{
